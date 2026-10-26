@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "兒科口袋助手（開發版）",
+  "short_name": "兒科助手",
+  "lang": "zh-Hant",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f5",
+  "theme_color": "#176b63",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}
