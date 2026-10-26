@@ -1,0 +1,23 @@
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const C=require('./dist/clinical-core.js'),D=require('./dist/clinical-data.js');
+const p={group:'child',ageMonths:48,weight:10,summary:'4歲 · 10 kg'},close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8);
+let r=C.dose({groups:['child'],kind:'bolus',unit:'mg/kg',min:1,max:2,cap:5},p,{dose:3,concentration:2});close(r.amount,30);close(r.volume,15);assert.equal(r.capped,false);assert.ok(r.notes.some(t=>t.includes('上限')));assert.ok(r.notes.some(t=>t.includes('參考範圍')));
+r=C.dose({groups:['neonate'],kind:'infusion',unit:'μg/kg/min',renal:true},p,{dose:0.1,concentration:10});close(r.rate,6);assert.ok(r.notes.some(t=>t.includes('年齡')));
+r=C.dose({groups:['child'],kind:'infusion',unit:'mg/kg/hr'},p,{dose:0.5,concentration:2});close(r.rate,2.5);
+r=C.dose({groups:['child'],kind:'bolus',unit:'mg/kg',floor:5},p,{dose:0.1,concentration:1});close(r.amount,1);assert.ok(r.notes.some(t=>t.includes('最低量')));
+for(const edit of [{dose:0},{dose:-1},{dose:NaN},{dose:Infinity},{concentration:0},{concentration:-1},{concentration:NaN}])assert.throws(()=>C.dose({groups:['child'],kind:'bolus',unit:'mg/kg'},p,{dose:1,concentration:1,...edit}));
+assert.throws(()=>C.dilution({c:2,total:10},1));assert.throws(()=>C.dilution({c:1,total:-10},2));close(C.dilution({c:0.5,total:20},2).draw,5);
+const {JSDOM}=require('./.qa/node_modules/jsdom'),html=fs.readFileSync('./dist/index.html','utf8'),dom=new JSDOM(html,{runScripts:'outside-only',url:'http://localhost/'}),w=dom.window,doc=w.document;
+for(const [,file]of html.matchAll(/<script src="([^"]+)"/g))w.eval(fs.readFileSync('./dist/'+file,'utf8'));
+function change(e){e.dispatchEvent(new w.Event('change',{bubbles:true}))}function submit(e){e.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}))}
+function fill(box,prefix,value){const l=[...box.querySelectorAll('label')].find(l=>l.firstChild?.textContent.startsWith(prefix));assert.ok(l,prefix);const e=l.querySelector('input,select');e.value=value;return e}
+let box=w.ClinicalUI.render('Fentanyl',p);assert.equal(box.querySelectorAll('input[type=checkbox]').length,0);
+change(fill(box,'輸入劑量單位','μg/kg/min'));fill(box,'每公斤劑量','0.1');fill(box,'最終給藥濃度','0.01');fill(box,'最終濃度單位','mg');fill(box,'原液濃度（','0.05');fill(box,'配製後總體積','20');submit(box.querySelector('form'));assert.match(box.querySelector('.infusion-result').textContent,/6 mL\/hr/);assert.match(box.querySelector('.infusion-result').textContent,/原液 4 mL/);assert.match(box.querySelector('.infusion-result').textContent,/稀釋液 16 mL/);
+fill(box,'每公斤劑量','0.2').dispatchEvent(new w.Event('input',{bubbles:true}));assert.equal(box.querySelector('.infusion-result').textContent,'');
+fill(box,'每公斤劑量','0.1');fill(box,'最終濃度單位','mmol');submit(box.querySelector('form'));assert.match(box.querySelector('.infusion-result').textContent,/不能直接互換/);
+for(const name of Object.keys(D.drugs)){box=w.ClinicalUI.render(name,p);assert.ok(box.querySelector('form'));assert.equal(box.querySelectorAll('input[type=checkbox]').length,0);assert.ok(box.querySelector('details'));}
+box=w.ClinicalUI.render('Propacetamol (Acetamol)',p);fill(box,'每公斤劑量','20');fill(box,'最終給藥濃度','10');submit(box.querySelector('form'));assert.match(box.querySelector('.infusion-result').textContent,/200 mg = 20 mL/);
+box=w.ClinicalUI.render('紅血球濃厚液',p);fill(box,'每公斤體積','15');fill(box,'輸注／補充時間','5');submit(box.querySelector('form'));assert.match(box.querySelector('.infusion-result').textContent,/150 mL/);assert.match(box.querySelector('.infusion-result').textContent,/30 mL\/hr/);assert.match(box.querySelector('.infusion-result').textContent,/4小時/);
+box=w.ClinicalUI.render('紅血球濃厚液',p);change(fill(box,'輸入方式','hb'));fill(box,'目前Hb','6');fill(box,'目標Hb','8');submit(box.querySelector('form'));assert.match(box.querySelector('.infusion-result').textContent,/100 mL/);
+doc.getElementById('years').value='4';doc.getElementById('weight').value='10';submit(doc.getElementById('patient-form'));doc.getElementById('tab-2').click();const b=[...doc.querySelectorAll('.expand')].find(b=>b.textContent.includes('Dobutamine'));b.click();assert.ok(doc.querySelector('.calculator'));doc.getElementById('weight').value='20';doc.getElementById('weight').dispatchEvent(new w.Event('input',{bubbles:true}));assert.equal(doc.querySelectorAll('.calculator form').length,0);assert.match(doc.getElementById('summary').textContent,/重新套用/);
+console.log('PASS: unchanged input dose, advisory ranges/age/caps, mg↔μg, minute↔hour, dilution, invalid arithmetic, all27 drug forms without checkboxes, manual blood/Hb and stale-result clearing. DOM only, not real-browser layout.');dom.window.close();

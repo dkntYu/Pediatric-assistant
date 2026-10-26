@@ -1,5 +1,16 @@
 # 兒科口袋助手進度
 
+## 最新：v0.4 計算機模式（2026-10-27）
+- 使用者明確要求作為計算機，由其決定劑量與條件；授權接續簡化，不反覆要求確認。
+- 新增dist/calculator.js：27藥自由換算、選填來源情境、mg/μg轉換、每分鐘／每小時、選填稀釋與輸注時間；無來源不預填建議值。
+- clinical-core.dose改成保留原輸入，不依來源自動cap/floor；參考範圍與年齡差異只註記，不阻擋算術。保留正數、有限值、量綱與無法稀釋的檢查。
+- 輸液／血品提供mL/kg或總體積換算；紅血球另有Hb增幅公式。全頁移除確認勾選。
+- 藥物既有資料及來源仍保留，長篇提醒收進可展開說明；Propacetamol等可自行輸入，但未補猜建議劑量。
+- 新測試test-calculator.cjs通過：不截限、mg↔μg、min↔hr、自訂稀釋、錯誤量綱、27藥表單、血品及舊結果清除。test-offline.cjs通過；不等於iOS實機測試。
+- test-clinical.cjs／test-ui.cjs是v0.3歷史測試，臨床阻擋與自動截限假設已被使用者新需求取代，不再列為v0.4檢查。
+- service worker版本已升v0.4並包含calculator.js；私人網站部署結果另記，未成功前不聲稱上線。
+- 精確下一步：完成本批版本發布、保存部署識別碼；使用者試算與手機離線實測。
+
 更新：2026-10-27（Asia/Taipei）。目前 v0.3 資料整理版，非臨床驗收完成版本；以下舊批次紀錄保留。
 
 ## 最新授權與狀態（優先於下方歷史紀錄）
@@ -13,6 +24,16 @@
 - 新增manifest、service worker及手動版本更新；test-offline.cjs測快取邏輯，仍需iPhone實際安裝、飛航與重新開啟驗證。
 - 使用者References原件與工作中間資料均排除Git與dist；沒有對外上傳原件。CLINICAL-REVIEW.md記錄本地表格疑點，不直接沿用疑有重大單位問題的欄位。
 - 精確下一步：完成本批離線測試、私人部署嘗試與checkpoint；院內醫師／藥師逐項驗收、Propacetamol現行來源與所有缺項、實際手機驗證仍必須明確列出，不能宣稱臨床可直接使用。
+
+## v0.3 交付 checkpoint（2026-10-27）
+- test-clinical.cjs、test-ui.cjs、test-offline.cjs、test-infusion.cjs 全部通過，JS語法與git diff --check通過。DOM與快取邏輯測試不等於實際瀏覽器／iPhone測試。
+- Sites 原始碼已推送，commit `776ba8094108c8af338f54884a3908ddfe85a935`；未包含References／work／.qa。
+- 私人部署成功：https://pediatric-pocket-prototype.alive-carp-0388.chatgpt.site
+- Site：appgprj_6adf79fe97c08191a7878e3d6f9e9b8b；version：appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_3d40a1ed5c248191815e0341be4bc470；deployment：appgdep_6adf8fa4c7508191a8d9d21135a174ab（succeeded）。只有owner，沒有外部viewer。
+- 已定位先前部署失敗原因：檔案由CodexSandboxOffline建立，發布程序為dknts，Git擁有者檢查阻擋。以僅本次程序的GIT_CONFIG_COUNT追加精確safe.directory修復，值必須用`C:/Users/dknts/Dropbox/Gdrive/Learning/MyVault/Pediatric-assistant`正斜線；未修改全域設定。
+- 以官方site-workflow.mjs打包發布；下次保留本Site身份，不重建Site。新credential只放記憶體並經stdin傳遞，不寫檔。
+- 當前精確下一步：使用者在手機登入私人網站，逐項試算並依CLINICAL-REVIEW.md核對；確認頁尾離線檔案備妥後加入主畫面、飛航模式關閉重開實測。實際iOS、完整臨床／濃度／處方驗收仍未完成。Propacetamol、缺乏來源族群與模式繼續停用，不為求項目全亮而猜數值。
+- 本段checkpoint為發布成功後本地補記；已部署程式版本仍是776ba80，沒有改動網站程式或資料。
 
 ## 已確定需求
 - 個人臺灣臨床工作助手；最終需要離線查詢。

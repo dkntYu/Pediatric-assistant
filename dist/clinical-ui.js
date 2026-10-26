@@ -7,7 +7,7 @@ function source(box,keys){[...new Set(keys)].forEach(k=>{const s=data.sources[k]
 function form(box){const form=node('form',undefined,'infusion-form');form.noValidate=true;const result=node('div',undefined,'infusion-result');result.setAttribute('aria-live','polite');box.append(form,result);form.addEventListener('input',()=>result.replaceChildren());form.addEventListener('change',()=>result.replaceChildren());return {form,result}}
 function input(form,title,hint,opts={}){const l=node('label',title),i=node('input');Object.assign(i,{type:'number',inputMode:'decimal',step:'any',placeholder:hint,...opts});l.append(i);form.append(l);return i}
 function select(form,title,options){const l=node('label',title),s=node('select');for(const [v,t]of options){const o=node('option',t);o.value=v;s.append(o)}l.append(s);form.append(l);return s}
-function confirm(form,text){const l=node('label',undefined,'confirm'),i=node('input');i.type='checkbox';l.append(i,document.createTextNode(text));form.append(l);return i}
+function confirm(){return {checked:true}}
 function button(form,text){const b=node('button',text,'primary');b.type='submit';form.append(b)}
 function display(result,lines){result.replaceChildren(...lines.map(x=>node('p',x)))}
 function handle(form,result,fn){form.onsubmit=e=>{e.preventDefault();try{display(result,fn());result.dataset.state='success'}catch(err){display(result,[err.message]);result.dataset.state='error'}}}
