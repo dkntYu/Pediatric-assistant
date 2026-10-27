@@ -40,21 +40,14 @@ const rows=[
  ['bic','context','1 mmol/kg、4.2%及1:1注射用水配方相符。AHA不建議一般心跳停止常規使用；需核對高血鉀等特定情境，不能僅因酸中毒就當常規復甦藥。',['emerg','ahaPals']],
  ['bicN','context','1–2 mmol/kg為來源在酸鹼資料不明時所列範圍；間歇輸注1–4小時且≤1 mmol/kg/hr。2 mmol/kg不能用1小時；4.2%仍高張，周邊管路有進一步稀釋方案。',['bicarb']],
  ['ca','review','現值10% 0.5 mL/kg（50 mg/kg鹽重量）符合RCUK高血鉀不穩定心律；CHEO列60 mg/kg且稀釋至50 mg/mL。須確認採用方案，不能混用濃度或視為元素鈣。',['rcuk','emerg']],
- ['amio','review','高優先：現模式第3／5次電擊共用最高300 mg；AHA後續劑量最高150 mg，RCUK第6頁也將第5次電擊後上限列150 mg，但同文件第3頁簡表寫300 mg。需分開首劑／後續劑量，原值暫保留。',['ahaArrest','rcuk']],
- ['amioPerf','context','5 mg/kg、60分鐘符合RCUK簡表；有脈且血流動力不穩定時仍須依心律處置流程，不能把慢速輸注作為所有有脈心律的統一方案。',['rcuk','ahaPals']],
- ['ade1','review','0.1 mg/kg、最高6 mg符合AHA首劑；RCUK採不同遞增方案。保留現值，但需人工確定整套SVT方案，不能交叉拼接。',['ahaTachy','rcuk']],
- ['ade2','review','0.2 mg/kg、最高12 mg符合AHA重複劑量；RCUK另列0.3 mg/kg方案。不是兩個可任意交換的首劑。',['ahaTachy','rcuk']],
  ['nor','context','0.01–1 μg/kg/min是CHEO通常維持範圍；起始0.01–0.1，不能把1當起始建議。12 μg/mL配方相符，以base計。',['nor']],
  ['norN','context','0.01–0.4 μg/kg/min及12 μg/mL配方相符；來源起始0.05。需分開起始值、滴定範圍與最高量。',['norNeo']],
- ['glu','review','D10W 2 mL/kg（0.2 g/kg）、最高50 mL符合RCUK表；CHEO急救表用5 mL/kg（0.5 g/kg）、通常最高250 mL。屬方案差異，不自動選較大值；新生兒低血糖未納入本模式。',['rcuk','emerg']],
- ['mag','review','現25 mg/kg、最高2 g、15–30分鐘可追溯CHEO急救表；ERC 2025 torsades列50 mg/kg、最高2 g。需人工決定方案，並區別有脈／無脈情境，不能把慢速時間套用所有復甦。',['emerg','erc']],
  ['iso','context','0.05–2 μg/kg/min及10 μg/mL配方符合CHEO；它是特定情境的持續輸注，不是PALS常規心跳停止藥。海外院內來源不等同臺灣實際製劑核准用法。',['iso','ahaArrest']],
  ['isoN','review','0.05起始、最高2 μg/kg/min及20 μg/mL配方可追溯，但來源內容仍為2014年。需更新新生兒依據，不視為2026新指引。',['isoNeo']],
  ['mil','review','0.25–0.75 μg/kg/min符合CHEO兒科；同來源青少年列0.375–0.75，現版未分青少年。腎功能異常需調整、每日總量含loading須追蹤，主畫面沒有腎功能與累積量資料。',['mil']],
  ['milLoad','context','50 μg/kg、15分鐘及100 μg/mL相符；IV loading不是快速push。是否loading需依血壓／情境決定，不能因為與維持量並列就認定必須合用。',['mil']],
  ['milN','context','0.25–0.75 μg/kg/min、100 μg/mL與不建議loading符合新生兒來源。現版只列足月，沒有因此推定早產兒禁用；腎調整仍須另判斷。',['milNeo']],
- ['nal','context','2 μg/kg、40 μg/mL符合CHEO呼吸抑制滴定方案；不是呼吸停止／嚴重中毒所列的完整救援劑量，亦非出生復甦常規。',['emerg']]
 ];
-const audit={date:'2026-10-27',baseline:'12359043d62f2b4f49a9aba0ab8137cee9c40fdd',scope:'急救藥物14種／28模式（27個IV顯示模式，1個IM資料模式不顯示）',sources,modes:Object.fromEntries(rows.map(([id,status,note,refs])=>[id,{status,note,refs}]))};
+const audit={date:'2026-10-27',baseline:'12359043d62f2b4f49a9aba0ab8137cee9c40fdd',scope:'急救藥物9種／21模式（20個IV顯示模式，1個IM資料模式不顯示）',sources,modes:Object.fromEntries(rows.map(([id,status,note,refs])=>[id,{status,note,refs}]))};
 root.ResuscitationAudit=audit;if(typeof module!=='undefined')module.exports=audit;
 })(typeof window!=='undefined'?window:globalThis);

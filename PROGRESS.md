@@ -1,10 +1,15 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.6.3 移除五項急救藥物（2026-10-27）
+- 依使用者要求移除Amiodarone（使用者拼作admiodarone）、Adenosine、Dextrose、Magnesium sulfate、Naloxone：介面、現用資料與核對模式同步移除。
+- 目前19藥50模式；現用急救核對頁剩9藥21模式（20 IV，1 IM資料保留但不顯示）。原28模式核對報告及基準快照作歷史檔保留，不重新產生成目前版本。
+- 原始Git歷史與備份保留；service worker升v0.6.3。測試及發布結果待記錄。
+
 ## 目前有效：v0.6.2 移除三項藥物（2026-10-27）
 - 依使用者要求移除Parecoxib (Dynastat)、Dexamethasone、Ondansetron：現用資料、來源、介面清單及舊入口清單同步移除；歷史紀錄與備份保留。
 - 目前24藥57模式；急救14藥28模式及其待人工檢視標記未改。
 - test-clinical.cjs、test-ui.cjs（100模式／族群）、test-recommendations.cjs、test-audit.cjs、test-offline.cjs通過。test-audit改為驗證急救各模式與備份一致，允許非急救項目按要求移除。
-- service worker更新v0.6.2；私人發布結果待補記。
+- service worker更新v0.6.2；已成功私人發布，commit aa3abe51c446be2a9defdc4f6b783fb771f66508，deployment appgdep_6ae011bfcbfc8191a9b8e01f33061ef6，version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_cda50e31e9a48191912a597068d41b10。原網址及owner-only保留。
 
 ## 目前有效：v0.6.1 急救藥物線上比對（2026-10-27）
 - 使用者授權接續線上核對、先存檔、衝突標註人工檢視。沿用先前分批約定，本批完成急救14藥28模式（27 IV顯示、1 IM原資料排除）。其他分類尚未在本輪重新線上核對。

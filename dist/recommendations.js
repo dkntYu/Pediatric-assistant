@@ -19,7 +19,7 @@ function render(name,p){
   const low=adjust(m.min),high=adjust(m.max);
   row.append(make('p',range(low,high)+' '+unit+suffix,'dose-number'));
   const audit=root.ResuscitationAudit?.modes[m.id];
-  if(audit){const labels={review:'待人工檢視 · 存在來源或適用條件衝突',context:'已比對來源 · 有情境限制',matched:'已比對指定來源劑量'};row.append(make('p',labels[audit.status],audit.status==='review'?'audit-flag':'audit-status'));if(m.id==='amio')row.append(make('p','後續劑量上限有150 mg依據；原300 mg值保留待檢視。','audit-flag'));}
+  if(audit){const labels={review:'待人工檢視 · 存在來源或適用條件衝突',context:'已比對來源 · 有情境限制',matched:'已比對指定來源劑量'};row.append(make('p',labels[audit.status],audit.status==='review'?'audit-flag':'audit-status'));;}
   row.append(make('p',m.kind==='infusion'?'持續靜脈輸注':'靜脈給藥','dose-label'));
   if(m.concentration&&unit!=='mL')row.append(make('p',range(low/m.concentration,high/m.concentration)+' mL · '+m.concentration+' '+unit+'/mL','dose-volume'));
   else if(m.recipe&&unit!=='mL'){const conc=m.recipe.c*(unit==='μg'?1000:1),factor=m.kind==='infusion'&&m.unit.endsWith('/min')?60:1;row.append(make('p',range(low*factor/conc,high*factor/conc)+(m.kind==='infusion'?' mL/hr':' mL'),'dose-volume'));row.append(make('p','依來源配方 '+conc+' '+unit+'/mL；實際濃度不同須重新換算','dose-condition'))}
