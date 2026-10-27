@@ -1,9 +1,17 @@
+## v0.7.5 (2026-10-27)
+- Removed search field and its event/filter dependencies; retained favorites.
+- Added always-visible IV fluid type references to maintenance, bolus and ongoing-loss cards, with expandable RCH sources and scope.
+- Neonatal references remain conditional on birth gestation >32 weeks, birthweight >1.5 kg and non-NICU setting. No automatic potassium addition or change to existing volume calculations.
+- Passed test-fluid-types, clinical, UI, recommendations, audit, equipment, remember and offline suites. DOM/simulation checks only; no phone/browser or clinical sign-off.
+- Private deployment pending for this revision.
+
 # 兒科口袋助手進度
 
 ## 目前有效：v0.7.4 緊湊基本資料與固定操作區（2026-10-27）
 - 左側四個年齡分類改為同一列、移除英文副標，縮小間距與面板內距；記憶說明收進可展開說明。
 - 套用按鈕移至表單外的固定操作區，以form屬性仍提交原patient-form；桌面只讓輸入區捲動，按鈕與摘要不隨輸入區滑出視野。手機保留自然頁面捲動。
-- 保留44px按鈕／輸入高度。service worker升v0.7.4；驗證及發布待記錄。
+- 保留44px按鈕／輸入高度。UI、remember、recommendations及外部提交按鈕測試通過；未實際瀏覽器排版驗證。
+- service worker升v0.7.4；已成功私人發布，commit 8ef2875491d60294f06c0b3c85dc6db44f5c9cc6，deployment appgdep_6ae01dfa50908191840e0102cea4c3df，version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_6140b74ff8f48191a84689c3a742dd55。
 
 ## 目前有效：v0.7.3 修正左側捲動（2026-10-27）
 - 桌面左側基本資料區原本sticky但高度未受限，矮視窗可能使底部按鈕難以到達。
