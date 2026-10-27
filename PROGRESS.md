@@ -1,5 +1,9 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.7.1 簡化頁首（2026-10-27）
+- 依使用者要求移除上方標語、介紹大標及描述段落，保留兒科口袋助手名稱，移除英文副標。
+- service worker升v0.7.1，更新後不再顯示舊介紹；功能與資料未改動。私人發布結果待補記。
+
 ## 目前有效：v0.7 呼吸機與CVC（2026-10-27）
 - 呼吸道新增「呼吸機設定」，輸液與輸血新增「CVC號數與深度」。equipment.js／css保留關鍵數字直接顯示、計算來源收展開區的設計。
 - 呼吸機：BCCH一般初始Vt／RR／Ti／目標MV，RCUK起始PEEP5與氧合目標；選填IBW／PBW採與實際體重較小者，未填時明示實際體重暫算。Pplat與PIP分開，不猜固定PIP或FiO₂。
@@ -7,7 +11,7 @@
 - CVC：Queen’s舊表Fr候選標待人工確認；右內頸限40–140cm採Yoon研究身高式。左側、鎖骨下與股靜脈不套右內頸公式，深度明示未提供；不把器材總長當置入深度。
 - EQUIPMENT-REVIEW.md保存來源、邊界解讀與限制；References原件未上傳。改版前dist與進度完整備份：../Pediatric-assistant-backups/20261027-before-ventilator-cvc/。
 - test-equipment、clinical、UI、recommendations、audit、remember、offline測試通過；JS語法與diff檢查通過。未iPhone實測。
-- service worker升v0.7並快取新資產；私人發布結果待補記。
+- service worker升v0.7並快取新資產；已成功私人發布，commit 0da878ebadf9ef19c51e6c2b9e6bd6041291d323，deployment appgdep_6ae01a46a2f881918c2abf6cd6132720，version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_9c0f0a0dc12481919b3b86eb1d91f2d4。原網址及owner-only保留；舊裝置需頁尾檢查更新。
 
 ## 目前有效：v0.6.4 記住上次基本資料（2026-10-27）
 - 依使用者要求，以此瀏覽器localStorage記住最後成功套用的年齡分類、年齡／胎齡／日齡及體重，不上傳。
