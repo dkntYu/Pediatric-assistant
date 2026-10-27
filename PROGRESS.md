@@ -1,3 +1,11 @@
+## v0.8.0 mobile UX (2026-10-27; local implementation complete, deployment pending)
+- Mobile/tablet (<850px): sticky category/favorites navigation, edit-patient anchor, safe-area spacing, 48px inputs/buttons, 16px field text, narrow-screen wrapping and single-column equipment tiles below 361px.
+- Applying valid patient data on mobile blurs the input and scrolls to lookup; category switches retain focus and return to lookup. Desktop apply retains its position. Roving keyboard tab focus and Chinese favorite labels added.
+- Clinical formulas and data unchanged. Service-worker cache bumped to v0.8.0.
+- PASS: test-mobile, UI (86 mode/cohort checks), remember, offline, clinical, equipment, recommendations, fluid-types, audit; JS syntax and git diff checks passed.
+- Validation limit: browser inventory is empty; no real browser, responsive layout rendering, iOS/Android keyboard or physical-device verification.
+- Next: finish private deployment and record deployment result; then verify 320/375/390/430px phone layouts and desktop on a browser/device.
+
 ## v0.7.5 (2026-10-27)
 - Removed search field and its event/filter dependencies; retained favorites.
 - Added always-visible IV fluid type references to maintenance, bolus and ongoing-loss cards, with expandable RCH sources and scope.

@@ -4,3 +4,42 @@
 .patient{padding:16px}.patient>.section-title{margin-bottom:8px}.patient-body{min-width:0;min-height:0}.patient .label{margin:6px 0}.patient .segments{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0 12px}.patient .segments button{min-height:44px;padding:9px 2px;font-size:13px}.patient .segments small{display:none}.patient #patient-form{grid-template-columns:1fr;gap:10px}.patient .fields{gap:8px}.patient input[type=number]{margin-top:5px;padding:9px 10px;min-height:44px}.patient-help{margin-top:8px;color:#728279;font-size:11px;line-height:1.6}.patient-help summary{cursor:pointer;padding:4px 0}.patient-actions{flex:none;margin-top:12px;border-top:1px solid #e2eae5;padding-top:12px;background:white}.patient-actions>.primary{width:100%;min-height:44px;padding:12px}.patient-actions>.summary{margin-top:8px;padding:8px 10px;font-size:12px}.patient .field-note{font-size:10px;line-height:1.5}@media(min-width:850px){.patient{display:flex;flex-direction:column;top:16px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:hidden;scrollbar-gutter:auto}.patient>.section-title{flex:none}.patient-body{overflow-y:auto;scrollbar-gutter:stable;scroll-padding-block:8px}.patient-actions{position:relative;z-index:1}}
 
 .search-row{justify-content:flex-end}.fluid-choice{border-left:3px solid #16867c;padding:4px 12px;margin:8px 0 16px}.fluid-choice>p{font-size:17px;font-weight:700;color:#145d58}.fluid-choice>small{display:block;line-height:1.6}
+
+/* Shared touch targets and responsive safeguards. */
+button,a,input,select,summary{-webkit-tap-highlight-color:transparent}
+button,a,summary{touch-action:manipulation}
+input,select{font:inherit}
+.filter,.text-button,.star{min-height:44px}
+.lookup,.detail,.card-title{min-width:0}
+.card-title,.detail p,.detail small,.reference-details{overflow-wrap:anywhere}
+.edit-patient{display:none}
+#patient,#lookup{scroll-margin-top:16px}
+.reference-details summary,.patient-help summary{min-height:44px;display:list-item;align-content:center}
+@media(max-width:849px){
+ header{padding:18px max(16px,env(safe-area-inset-right)) 12px max(16px,env(safe-area-inset-left))}
+ main{padding:12px max(12px,env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+ .notice{margin-bottom:16px;line-height:1.7}
+ .panel{border-radius:14px}
+ .lookup{margin-top:24px}
+ .lookup-nav{position:sticky;top:0;z-index:5;background:#f4f7f5;padding:calc(8px + env(safe-area-inset-top)) 0 8px;border-bottom:1px solid #dce6e1;box-shadow:0 4px 8px #233d3a0a}
+ .lookup-nav .section-title{gap:6px}
+ .edit-patient{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px;color:#176b63;font-size:13px;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+ .tabs{gap:6px;margin-top:6px;grid-template-columns:repeat(4,minmax(0,1fr))}
+ .tabs button{min-height:48px;padding:10px 2px;text-align:center;border-radius:9px}
+ .tabs button span{display:none}
+ .tabs button b{margin:0;font-size:13px;white-space:nowrap}
+ .lookup-nav .search-row{margin:8px 0 0}
+ .filter{padding:8px 16px}
+ input[type=number],select,.equipment-controls input,.equipment-controls select{font-size:16px;min-height:48px}
+ .patient input[type=number]{min-height:48px}
+ .patient .segments button{min-height:48px}
+ .patient-actions>.primary{min-height:48px}
+ .detail{padding:14px}
+ .card-title{padding:14px;font-size:16px}
+ .star{padding:10px;min-width:48px;align-self:flex-start}
+ .slots{grid-template-columns:minmax(0,1fr)}
+ .infusion-form .confirm{min-height:44px;padding-block:8px;line-height:1.7}
+ .infusion-form .confirm input{flex-shrink:0;width:22px;height:22px}
+ #results:focus-visible{outline:3px solid #86b8a8;outline-offset:3px}
+}
+@media(max-width:360px){.patient{padding:12px}.detail{padding:12px}.equipment-grid{grid-template-columns:minmax(0,1fr)}}
