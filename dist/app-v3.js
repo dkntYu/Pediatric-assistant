@@ -7,6 +7,15 @@ const categories=[
 ];
 let group='child',category=0,patient=null,onlyFavorites=false;
 const favorites=new Set(),opened=new Set(),$=s=>document.querySelector(s);
+const rememberedKey='pediatric-pocket.last-input.v1';
+function rememberInputs(){try{const values=Object.fromEntries([...$('#patient-form').querySelectorAll('input')].map(i=>[i.id,i.value]));localStorage.setItem(rememberedKey,JSON.stringify({version:1,group,values}));$('#remember-status').textContent='已記住本次年齡與體重，僅儲存在此瀏覽器。'}catch{$('#remember-status').textContent='此瀏覽器無法保存資料；仍可正常查詢。'}}
+function restoreInputs(){let saved;try{saved=JSON.parse(localStorage.getItem(rememberedKey));}catch{return}if(!saved||saved.version!==1||!groups.some(g=>g[0]===saved.group)||!saved.values||typeof saved.values!=='object')return;
+ const previousGroup=group;group=saved.group;ageFields();const inputs=[...$('#patient-form').querySelectorAll('input')];
+ const valid=inputs.every(i=>{const v=saved.values[i.id];if(typeof v!=='string'||v.trim()==='')return false;i.value=v;return i.validity.valid&&Number.isFinite(i.valueAsNumber)});
+ const invalidInfant=group==='infant'&&$('#months').valueAsNumber===0&&$('#extra-days').valueAsNumber<=28;
+ if(!valid||invalidInfant){group=previousGroup;$('#patient-form').reset();ageFields();return}
+ renderGroups();$('#summary').textContent='已帶入上次資料，請確認後套用';$('#remember-status').textContent='已帶入此瀏覽器上次套用的年齡與體重。';
+}
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
 function field(id,label,unit,min,max,placeholder,value){const wrap=el('div');const l=el('label','',label);l.htmlFor=id;l.append(el('span','',unit));const i=el('input');Object.assign(i,{id,type:'number',min:String(min),max:String(max),step:'1',placeholder,required:true});if(value!==undefined)i.value=value;i.inputMode='numeric';wrap.append(l,i);return wrap}
 function ageFields(){const a=$('#age-fields');a.replaceChildren();if(['preterm','neonate'].includes(group)){
@@ -27,10 +36,10 @@ function renderResults(){const node=$('#results'),q=$('#search').value.trim().to
 $('#patient-form').onsubmit=e=>{e.preventDefault();const inputs=[...$('#patient-form').querySelectorAll('input')],bad=inputs.find(i=>!i.validity.valid||!Number.isFinite(i.valueAsNumber));if(bad){$('#error').textContent='請填寫所有必要欄位並確認範圍；體重最多小數一位。';bad.focus();return}const weight=$('#weight').valueAsNumber;
  try{const vals=Object.fromEntries(inputs.map(i=>[i.id,i.valueAsNumber]));let ageMonths=0,correctedWeeks=null;if(group==='child')ageMonths=vals.years*12+vals.months;else if(group==='infant'){if(vals.months===0&&vals['extra-days']<=28)throw Error('出生0–28天請選新生兒，避免套用兒科劑量。');ageMonths=vals.months+vals['extra-days']/30.4375;}else{ageMonths=vals.days/30.4375;correctedWeeks=vals.gestation+(vals['gestation-days']+vals.days)/7;}
  const summary=groups.find(g=>g[0]===group)[1]+' · '+(group==='child'?vals.years+'歲'+vals.months+'個月':group==='infant'?vals.months+'個月'+vals['extra-days']+'天':'出生'+vals.gestation+'週'+vals['gestation-days']+'天 · 日齡'+vals.days+'天')+' · '+weight.toFixed(1)+' kg';
- const next={group,weight,ageMonths,correctedWeeks,birthWeeks:vals.gestation+((vals['gestation-days']||0)/7),postnatalDays:vals.days,summary};ClinicalCore.checkPatient(next);patient=next;$('#weight').value=weight.toFixed(1);$('#summary').textContent=summary;$('#summary').className='summary ready';$('#error').textContent='';renderResults();
+ const next={group,weight,ageMonths,correctedWeeks,birthWeeks:vals.gestation+((vals['gestation-days']||0)/7),postnatalDays:vals.days,summary};ClinicalCore.checkPatient(next);patient=next;$('#weight').value=weight.toFixed(1);$('#summary').textContent=summary;$('#summary').className='summary ready';$('#error').textContent='';rememberInputs();renderResults();
  }catch(err){patient=null;$('#error').textContent=err.message;renderResults()}
 };
 $('#patient-form').addEventListener('input',markDirty);$('#search').oninput=renderResults;
 $('#favorites').onclick=()=>{onlyFavorites=!onlyFavorites;$('#favorites').classList.toggle('active',onlyFavorites);$('#favorites').setAttribute('aria-pressed',String(onlyFavorites));renderResults()};
-$('#reset').onclick=()=>{patient=null;group='child';$('#patient-form').reset();ageFields();renderGroups();$('#summary').textContent='尚未套用基本資料';$('#summary').className='summary';$('#error').textContent='';renderResults()};
-renderGroups();ageFields();renderTabs();renderResults();
+$('#reset').onclick=()=>{patient=null;group='child';$('#patient-form').reset();ageFields();renderGroups();$('#summary').textContent='尚未套用基本資料';$('#summary').className='summary';$('#error').textContent='';try{localStorage.removeItem(rememberedKey);$('#remember-status').textContent='已清除記錄；下次套用資料時重新記住。'}catch{$('#remember-status').textContent='瀏覽器未能清除儲存記錄，請在瀏覽器設定清除此網站資料。'}renderResults()};
+renderGroups();ageFields();renderTabs();renderResults();restoreInputs();

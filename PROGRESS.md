@@ -1,9 +1,17 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.6.4 記住上次基本資料（2026-10-27）
+- 依使用者要求，以此瀏覽器localStorage記住最後成功套用的年齡分類、年齡／胎齡／日齡及體重，不上傳。
+- 下次開啟自動帶入；顯示「已帶入上次資料，請確認後套用」，不自動將上次資料視為本次病人。清除資料會清除此專用儲存鍵。
+- 無效輸入不覆蓋最後有效資料；損壞或不適用記錄忽略；瀏覽器禁止儲存時仍可正常查詢並顯示提示。
+- 更新頁面原「不儲存」文字，service worker升v0.6.4。test-remember.cjs（四族群、還原、清除、無效資料及禁用儲存）、UI、recommendations、offline測試通過；未iPhone實測。
+- 私人發布結果待補記。
+
 ## 目前有效：v0.6.3 移除五項急救藥物（2026-10-27）
 - 依使用者要求移除Amiodarone（使用者拼作admiodarone）、Adenosine、Dextrose、Magnesium sulfate、Naloxone：介面、現用資料與核對模式同步移除。
 - 目前19藥50模式；現用急救核對頁剩9藥21模式（20 IV，1 IM資料保留但不顯示）。原28模式核對報告及基準快照作歷史檔保留，不重新產生成目前版本。
-- 原始Git歷史與備份保留；service worker升v0.6.3。測試及發布結果待記錄。
+- 原始Git歷史與備份保留；service worker升v0.6.3。clinical、UI（86模式／族群）、recommendations、audit及offline測試通過。
+- 已成功私人發布，commit 767d675abc9c70a05e34f60f34baf8039a91733d，deployment appgdep_6ae01273513c8191ac98dcac1ce6b332，version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_3a1a213c27ac81919f089a7875cb61a2。原網址及owner-only保留。
 
 ## 目前有效：v0.6.2 移除三項藥物（2026-10-27）
 - 依使用者要求移除Parecoxib (Dynastat)、Dexamethasone、Ondansetron：現用資料、來源、介面清單及舊入口清單同步移除；歷史紀錄與備份保留。
