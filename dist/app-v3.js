@@ -1,9 +1,9 @@
 const groups=[['preterm','早產兒','Preterm'],['neonate','新生兒','Neonate'],['infant','嬰兒','Infant'],['child','兒童','Child']];
 const categories=[
- {name:'呼吸道',en:'AIRWAY',items:['氣管內管','喉頭鏡','喉頭罩','鼻咽呼吸道','口咽呼吸道']},
+ {name:'呼吸道',en:'AIRWAY',items:['呼吸機設定','氣管內管','喉頭鏡','喉頭罩','鼻咽呼吸道','口咽呼吸道']},
  {name:'麻醉藥物',en:'ANESTHESIA',items:['Propofol','Ketamine','Midazolam','Succinylcholine','Cisatracurium (Nimbex)','Rocuronium','Fentanyl','Morphine','Propacetamol (Acetamol)','Sugammadex']},
  {name:'急救藥物',en:'RESUSCITATION',items:['Atropine','Epinephrine (Bosmin)','Dobutamine','Dopamine','Sodium bicarbonate','Calcium gluconate','Norepinephrine','Isoproterenol','Milrinone']},
- {name:'輸液與輸血',en:'FLUIDS / BLOOD',items:['維持輸液','輸液補充／快速輸注','缺損與持續流失補充','紅血球濃厚液','新鮮冷凍血漿','血小板','冷凍沉澱品']}
+ {name:'輸液與輸血',en:'FLUIDS / BLOOD',items:['CVC 號數與深度','維持輸液','輸液補充／快速輸注','缺損與持續流失補充','紅血球濃厚液','新鮮冷凍血漿','血小板','冷凍沉澱品']}
 ];
 let group='child',category=0,patient=null,onlyFavorites=false;
 const favorites=new Set(),opened=new Set(),$=s=>document.querySelector(s);

@@ -1,11 +1,20 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.7 呼吸機與CVC（2026-10-27）
+- 呼吸道新增「呼吸機設定」，輸液與輸血新增「CVC號數與深度」。equipment.js／css保留關鍵數字直接顯示、計算來源收展開區的設計。
+- 呼吸機：BCCH一般初始Vt／RR／Ti／目標MV，RCUK起始PEEP5與氧合目標；選填IBW／PBW採與實際體重較小者，未填時明示實際體重暫算。Pplat與PIP分開，不猜固定PIP或FiO₂。
+- 新生兒RDS另採CAHS指引；早產兒必須選情境，不自動推定RDS或套一般兒科表。
+- CVC：Queen’s舊表Fr候選標待人工確認；右內頸限40–140cm採Yoon研究身高式。左側、鎖骨下與股靜脈不套右內頸公式，深度明示未提供；不把器材總長當置入深度。
+- EQUIPMENT-REVIEW.md保存來源、邊界解讀與限制；References原件未上傳。改版前dist與進度完整備份：../Pediatric-assistant-backups/20261027-before-ventilator-cvc/。
+- test-equipment、clinical、UI、recommendations、audit、remember、offline測試通過；JS語法與diff檢查通過。未iPhone實測。
+- service worker升v0.7並快取新資產；私人發布結果待補記。
+
 ## 目前有效：v0.6.4 記住上次基本資料（2026-10-27）
 - 依使用者要求，以此瀏覽器localStorage記住最後成功套用的年齡分類、年齡／胎齡／日齡及體重，不上傳。
 - 下次開啟自動帶入；顯示「已帶入上次資料，請確認後套用」，不自動將上次資料視為本次病人。清除資料會清除此專用儲存鍵。
 - 無效輸入不覆蓋最後有效資料；損壞或不適用記錄忽略；瀏覽器禁止儲存時仍可正常查詢並顯示提示。
 - 更新頁面原「不儲存」文字，service worker升v0.6.4。test-remember.cjs（四族群、還原、清除、無效資料及禁用儲存）、UI、recommendations、offline測試通過；未iPhone實測。
-- 私人發布結果待補記。
+- 已成功私人發布v0.6.4，commit db5730fe662fb1ddb5eb194ed179eecdf774664c，deployment appgdep_6ae014d1ff208191bfc1195451ec92d1，version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_c692878a9bbc81919071fe9bb39453cd。原網址及owner-only保留。
 
 ## 目前有效：v0.6.3 移除五項急救藥物（2026-10-27）
 - 依使用者要求移除Amiodarone（使用者拼作admiodarone）、Adenosine、Dextrose、Magnesium sulfate、Naloxone：介面、現用資料與核對模式同步移除。
