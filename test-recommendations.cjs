@@ -9,7 +9,7 @@ box=w.ClinicalUI.render('Dobutamine',p);assert.deepEqual(visible(box),['25–150
 box=w.ClinicalUI.render('Midazolam',{...p,weight:40});assert.deepEqual(visible(box),['2 mg']);assert.ok(![...box.querySelectorAll('.mode-select option')].some(o=>o.value==='midPO'));
 assert.equal(w.ClinicalUI.render('Milrinone',{...p,group:'preterm',ageMonths:0}).querySelectorAll('.dose-number').length,0);
 assert.equal(w.ClinicalUI.render('Propofol',{...p,group:'infant',ageMonths:3}).querySelectorAll('.dose-number').length,0);
-assert.equal(w.ClinicalUI.render('Parecoxib (Dynastat)',p).querySelectorAll('.dose-number').length,0);
+for(const name of ['Parecoxib (Dynastat)','Dexamethasone','Ondansetron'])assert.equal(w.ClinicalData.drugs[name],undefined);
 for(const group of ['preterm','neonate','infant','child'])for(const name of Object.keys(w.ClinicalData.drugs)){
  box=w.ClinicalUI.render(name,{...p,group,ageMonths:group==='child'?48:group==='infant'?6:0});visible(box);
  for(const o of box.querySelectorAll('.mode-select option'))assert.ok(!/\b(?:PO|IM|SC|IN)\b/.test(o.textContent));

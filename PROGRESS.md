@@ -1,5 +1,11 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.6.2 移除三項藥物（2026-10-27）
+- 依使用者要求移除Parecoxib (Dynastat)、Dexamethasone、Ondansetron：現用資料、來源、介面清單及舊入口清單同步移除；歷史紀錄與備份保留。
+- 目前24藥57模式；急救14藥28模式及其待人工檢視標記未改。
+- test-clinical.cjs、test-ui.cjs（100模式／族群）、test-recommendations.cjs、test-audit.cjs、test-offline.cjs通過。test-audit改為驗證急救各模式與備份一致，允許非急救項目按要求移除。
+- service worker更新v0.6.2；私人發布結果待補記。
+
 ## 目前有效：v0.6.1 急救藥物線上比對（2026-10-27）
 - 使用者授權接續線上核對、先存檔、衝突標註人工檢視。沿用先前分批約定，本批完成急救14藥28模式（27 IV顯示、1 IM原資料排除）。其他分類尚未在本輪重新線上核對。
 - 原v0.6完整來源快照32檔、SHA-256及Git bundle：../Pediatric-assistant-backups/20261027-v06-before-online-audit/。bundle已驗證；restore-to-new-folder.ps1可驗證後還原至新資料夾，不覆蓋現行版。
@@ -9,7 +15,9 @@
 - 主畫面保留數字並增加人工檢視標記，完整說明及原始連結放展開區；頁尾連audit.html，含僅顯示待檢視的篩選。核對頁及資料納入離線快取。
 - clinical-data.js及clinical-core.js未修改，有衝突的劑量未自動更改。原References疑點保留，不重新匯入舊圖表。
 - test-audit.cjs、test-clinical.cjs、test-ui.cjs、test-recommendations.cjs、test-offline.cjs通過；核對頁斷網導航及資料可用，語法與diff檢查通過。32檔備份雜湊均相符，clinical-data.js／clinical-core.js與備份逐位元一致。尚未iPhone實機測試。
-- 發布結果待補記。下一批為麻醉藥物（本次未核對）；人工決定各衝突採用方案後再修改臨床值，不直接拼接不同指引。
+- 已成功發布v0.6.1（owner-only）：commit 7f9accf51d5f4ee608ee97bb8ef82962434f7b5b；deployment appgdep_6ae0020ac6f08191a2bc0623283c382a；version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_04d0cffa3b848191822d0431976fd41e。
+- 核對頁：https://pediatric-pocket-prototype.alive-carp-0388.chatgpt.site/audit.html。舊裝置使用頁尾檢查更新套用新版。
+- 下一批為麻醉藥物（本次未核對）；人工決定各衝突採用方案後再修改臨床值，不直接拼接不同指引。
 
 ## 目前有效：v0.6 IV建議數字直接顯示（2026-10-27）
 - 使用者再次明確要求：依年齡與體重建議劑量、關鍵數字立即顯示、方法置於展開區，給藥途徑皆IV。
