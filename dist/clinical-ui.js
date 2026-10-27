@@ -9,7 +9,7 @@ function input(form,title,hint,opts={}){const l=node('label',title),i=node('inpu
 function select(form,title,options){const l=node('label',title),s=node('select');for(const [v,t]of options){const o=node('option',t);o.value=v;s.append(o)}l.append(s);form.append(l);return s}
 function confirm(){return {checked:true}}
 function button(form,text){const b=node('button',text,'primary');b.type='submit';form.append(b)}
-function display(result,lines){result.replaceChildren(...lines.map(x=>node('p',x)))}
+function display(result,lines){result.replaceChildren();if(root.ClinicalUI.showResult&&result.closest('section').querySelector('.reference-details'))root.ClinicalUI.showResult(result,lines);else result.append(...lines.map(x=>node('p',x)))}
 function handle(form,result,fn){form.onsubmit=e=>{e.preventDefault();try{display(result,fn());result.dataset.state='success'}catch(err){display(result,[err.message]);result.dataset.state='error'}}}
 function drug(name,p){const d=data.drugs[name];if(!d)return null;const box=section(name);box.append(node('p',d.warning,'clinical-warning'));if(d.blocked){source(box,d.sources);box.append(node('p','本項不啟用劑量計算。'));return box}if(!p){box.append(node('p','請先套用年齡與體重。'));source(box,d.modes.map(m=>m.source));return box}
  box.append(node('p',p.summary));if(d.sources)source(box,d.sources);let modes;try{modes=d.modes.filter(m=>!C.eligibility(m,p))}catch(err){box.append(node('p',err.message));return box}
