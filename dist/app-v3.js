@@ -6,7 +6,7 @@ const categories=[
  {name:'輸液與輸血',en:'FLUIDS / BLOOD',items:['維持輸液','輸液補充／快速輸注','缺損與持續流失補充','紅血球濃厚液','新鮮冷凍血漿','血小板','冷凍沉澱品']}
 ];
 let group='child',category=0,patient=null,onlyFavorites=false;
-const favorites=new Set(),$=s=>document.querySelector(s);
+const favorites=new Set(),opened=new Set(),$=s=>document.querySelector(s);
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
 function field(id,label,unit,min,max,placeholder,value){const wrap=el('div');const l=el('label','',label);l.htmlFor=id;l.append(el('span','',unit));const i=el('input');Object.assign(i,{id,type:'number',min:String(min),max:String(max),step:'1',placeholder,required:true});if(value!==undefined)i.value=value;i.inputMode='numeric';wrap.append(l,i);return wrap}
 function ageFields(){const a=$('#age-fields');a.replaceChildren();if(['preterm','neonate'].includes(group)){
@@ -19,9 +19,9 @@ function renderTabs(){const node=$('#tabs');node.replaceChildren();categories.fo
 const aliases={'Epinephrine (Bosmin)':'adrenaline 腎上腺素','Norepinephrine':'noradrenaline 正腎上腺素','Isoproterenol':'isoprenaline','Dextrose':'glucose 葡萄糖','Cisatracurium (Nimbex)':'順式阿曲庫銨','Propacetamol (Acetamol)':'舒疼消熱','Parecoxib (Dynastat)':'止痛'};
 function renderResults(){const node=$('#results'),q=$('#search').value.trim().toLowerCase();node.replaceChildren();let count=0;
  categories[category].items.forEach((name,i)=>{const key=name;if(!(name+' '+(aliases[name]||'')).toLowerCase().includes(q)||onlyFavorites&&!favorites.has(key))return;count++;
-  const card=el('article','card'),head=el('div','card-head'),title=el('div','card-title');title.append(el('strong','',name));const star=el('button','star'+(favorites.has(key)?' on':''),favorites.has(key)?'★':'☆');star.setAttribute('aria-label',(favorites.has(key)?'移除常用：':'加入常用：')+name);star.setAttribute('aria-pressed',String(favorites.has(key)));star.onclick=()=>{favorites.has(key)?favorites.delete(key):favorites.add(key);star.textContent=favorites.has(key)?'★':'☆';star.classList.toggle('on',favorites.has(key));star.setAttribute('aria-pressed',String(favorites.has(key)));star.setAttribute('aria-label',(favorites.has(key)?'移除常用：':'加入常用：')+name);if(onlyFavorites)renderResults()};head.append(title,star);
-  const detail=el('div','detail');detail.id='detail-'+category+'-'+i;
-  const content=ClinicalUI.render(name,patient)||Infusion.render(name,patient);if(content)detail.append(content);else detail.append(el('p','','此項尚無可用來源。'));
+  const card=el('article','card'),head=el('div','card-head'),b=el('button','expand'),title=el('div');title.append(el('strong','',name));const d=ClinicalData.drugs[name];title.append(el('small','',d?.blocked?'來源限制 · 不啟用計算':'參考資訊與計算'));b.append(title,el('span','arrow',opened.has(key)?'−':'+'));b.setAttribute('aria-expanded',String(opened.has(key)));const id='detail-'+category+'-'+i;b.setAttribute('aria-controls',id);b.onclick=()=>{opened.has(key)?opened.delete(key):opened.add(key);renderResults();node.querySelector('[aria-controls="'+id+'"]').focus()};const star=el('button','star'+(favorites.has(key)?' on':''),favorites.has(key)?'★':'☆');star.setAttribute('aria-label',(favorites.has(key)?'移除常用：':'加入常用：')+name);star.setAttribute('aria-pressed',String(favorites.has(key)));star.onclick=()=>{favorites.has(key)?favorites.delete(key):favorites.add(key);renderResults()};head.append(b,star);
+  const detail=el('div','detail');detail.id=id;detail.hidden=!opened.has(key);
+  if(opened.has(key)){const content=ClinicalUI.render(name,patient)||Infusion.render(name,patient);if(content)detail.append(content);else detail.append(el('p','','此項尚無可用來源，不計算。'))}
   card.append(head,detail);node.append(card)
  });if(!count)node.append(el('div','empty',onlyFavorites?'本分類沒有符合的常用項目。點 ☆ 可加入常用。':'沒有符合的項目，請換個關鍵字。'));
 }

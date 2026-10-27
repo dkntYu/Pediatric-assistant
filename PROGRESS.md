@@ -1,12 +1,27 @@
 # 兒科口袋助手進度
 
+## 目前有效：還原建議劑量版（2026-10-27）
+- 使用者澄清需要依年齡及體重的藥物建議劑量，要求還原原版。此指示取代下方v0.4／v0.5「計算機模式」方向。
+- 已從776ba8094108c8af338f54884a3908ddfe85a935還原index、clinical-core、clinical-ui、app-v3、sw與README。calculator.js／css僅保留存檔，不再由入口載入。
+- 回復年齡適用情境、來源每公斤參考範圍、上限與濃度規則；選定情境與劑量後依體重計算，並非所有藥物自動選出單一處方。
+- 還原前完整dist及進度備份：../Pediatric-assistant-backups/20261027-before-restore-recommendations/。Git歷史亦保留v0.4及v0.5。
+- service worker使用新識別pediatric-v0.3-restored-20261027-b，避免舊計算機快取。
+- test-clinical.cjs、test-ui.cjs、test-offline.cjs通過；27藥59模式及108族群／模式DOM檢查，未做iPhone實測。
+- 急救藥物自動核對依使用者要求仍暫停，未將調查內容套用到資料。
+- 私人網站發布結果待補記。
+
 ## 最新：v0.5 數字優先介面（2026-10-27）
 - 所有卡片直接顯示，移除整張卡片的展開步驟。呼吸道尺寸／深度及維持輸液數字常駐；手動計算結果置於輸入欄位上方，以大字呈現用量、體積、速率及稀釋量。
 - 公式、計算過程、參考範圍、來源與補充說明集中到「計算依據與來源」。無自動估算的器材保留可見提示。
 - 常用星號切換不重建卡片，保留輸入；修改病人資料仍清除過期結果。
 - 不改動劑量公式，不預填劑量，不自動截限。仍由使用者填數值並按計算。
 - test-calculator.cjs、test-offline.cjs及修改JS語法檢查通過；新增卡片直接可見及公式摺疊的DOM檢查。未做實際瀏覽器／iPhone視覺測試。
-- service worker更新為v0.5。發布結果待記錄。
+- service worker更新為v0.5，已成功發布，維持owner-only。
+- Commit：d78930c4256725f0695c1380ab40dcf9d67133b4。
+- Deployment：appgdep_6adff13a3a4c8191b0ecd3ca18c86cbd，succeeded。
+- Version：appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_72fb8b433adc8191bc181c6afc481dda。
+- 網址：https://pediatric-pocket-prototype.alive-carp-0388.chatgpt.site
+- 已快取舊版本的裝置使用頁尾「檢查版本更新」套用新版，確認標示v0.5。下一步：使用者手機試用與離線實測。
 
 ## 最新：v0.4 計算機模式（2026-10-27）
 - 使用者明確要求作為計算機，由其決定劑量與條件；授權接續簡化，不反覆要求確認。

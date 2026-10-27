@@ -2,22 +2,21 @@
 const valid=n=>typeof n==='number'&&Number.isFinite(n),positive=n=>valid(n)&&n>0;
 function checkPatient(p){if(!p||!['preterm','neonate','infant','child'].includes(p.group)||!positive(p.weight)||p.weight>200||Math.abs(p.weight*10-Math.round(p.weight*10))>1e-7)throw Error('請先套用有效體重：0.1–200.0 kg，最多一位小數。');if(!valid(p.ageMonths)||p.ageMonths<0||p.ageMonths>=216)throw Error('本工具只處理未滿18歲，請確認年齡。');}
 function eligibility(mode,p){checkPatient(p);if(!mode.groups.includes(p.group))return '此模式沒有本年齡族群的已整理依據，請選其他模式或參考專用指引。';if(mode.minMonths!==undefined&&p.ageMonths<mode.minMonths)return '未達此模式最低年齡。';if(mode.maxMonths!==undefined&&p.ageMonths>mode.maxMonths)return '超過此模式年齡範圍。';if(mode.aboveMonths!==undefined&&p.ageMonths<=mode.aboveMonths)return '此模式限大於 '+mode.aboveMonths+' 個月。';return '';}
-function dilution(recipe,stock){if(!positive(stock)||!positive(recipe.c)||!positive(recipe.total))throw Error('原液濃度、目標濃度及最終體積須為正數。');const draw=recipe.c*recipe.total/stock,add=recipe.total-draw;if(!positive(draw)||add<0)throw Error('目標濃度高於原液，無法用稀釋達成。');return {draw,add,total:recipe.total,c:recipe.c};}
-function dose(mode,p,o){checkPatient(p);if(!positive(o.dose))throw Error('請輸入大於0的每公斤劑量。');if(!['mg/kg','μg/kg','mmol/kg','mL/kg','μg/kg/min','μg/kg/hr','mg/kg/hr','mg/kg/min'].includes(mode.unit))throw Error('未支援的劑量單位。');
- const notes=[],problem=eligibility(mode,p);if(problem)notes.push('年齡參考：'+problem);if(valid(mode.min)&&valid(mode.max)&&(o.dose<mode.min||o.dose>mode.max))notes.push('輸入值超出所列參考範圍，仍依你的數值計算。');
- if(o.minutes!==undefined&&!positive(o.minutes))throw Error('輸注時間須為有效正數。');
- if(o.total!==undefined&&!positive(o.total))throw Error('配製後體積須為有效正數。');
- const raw=o.dose*p.weight,amount=raw,unit=mode.unit.split('/')[0];let volume=null,rate=null,mix=null;
- if(valid(mode.cap)&&amount>mode.cap)notes.push('計算量高於來源單次上限 '+mode.cap+' '+unit+'；未自動截限。');
- if(valid(mode.floor)&&amount<mode.floor)notes.push('計算量低於來源最低量 '+mode.floor+' '+unit+'；未自動提高。');
- if(mode.kind==='infusion'){if(!positive(o.concentration))throw Error('請輸入大於0的最終濃度（'+unit+'/mL）。');rate=amount*(mode.unit.endsWith('/min')?60:1)/o.concentration;}
- else if(unit==='mL')volume=amount;
- else{if(!positive(o.concentration))throw Error('請輸入大於0的最終濃度（'+unit+'/mL）。');volume=amount/o.concentration;}
- if(mode.minMinutes||positive(o.minutes)){if(!positive(o.minutes))throw Error('輸注時間須大於0。');if(mode.minMinutes&&o.minutes<mode.minMinutes)notes.push('輸注時間短於來源參考；未自動延長。');rate=volume*60/o.minutes;}
- if(mode.maxRateKgHour&&positive(o.minutes)&&amount/p.weight/(o.minutes/60)>mode.maxRateKgHour)notes.push('每公斤每小時用量超出來源參考；未改動結果。');
- if(mode.recipe&&positive(o.stock)){const factor=unit==='μg'?1000:1;const target=o.concentration/factor;mix=dilution({...mode.recipe,c:target,total:positive(o.total)?o.total:mode.recipe.total},o.stock);if(Math.abs(target-mode.recipe.c)>1e-8||Math.abs(o.stock-mode.recipe.stock)>1e-8)notes.push('自訂濃度：稀釋部分僅為C₁V₁=C₂V₂算術，不代表已驗證此新配方。');if(volume!==null&&volume>mix.total)notes.push('本次抽取量超過所填配製總體積。');}
- if(![amount,volume??0,rate??0].every(Number.isFinite))throw Error('數值過大或無效，無法計算。');
- return {raw,amount,unit,capped:false,volume,rate,mix,notes};
+function dilution(recipe,stock){if(!positive(stock)||Math.abs(stock-recipe.stock)>1e-8)throw Error('原液濃度不符來源配方：需 '+recipe.stock+' '+recipe.unit+'/mL。');const draw=recipe.c*recipe.total/stock,add=recipe.total-draw;if(!positive(draw)||add<0)throw Error('不合法的稀釋體積。');return {draw,add,total:recipe.total,c:recipe.c};}
+function dose(mode,p,o){const problem=eligibility(mode,p);if(problem)throw Error(problem);if(!o.confirm)throw Error('請核對來源、適應症、病人條件與院內規範。');if(mode.renal&&o.renal!=='normal')throw Error('腎功能異常或不明，本版不執行此模式。');if(!valid(o.dose)||o.dose<mode.min||o.dose>mode.max)throw Error('每公斤劑量必須在 '+mode.min+'–'+mode.max+' '+mode.unit+'。');let cap=mode.cap??Infinity;if(mode.requireCap){if(!positive(o.localCap))throw Error('請輸入已核對的院內單次上限。');cap=o.localCap;}
+ if(mode.centralAbove&&o.dose>mode.centralAbove&&o.access!=='central')throw Error('此來源在該劑量需中央管路；周邊或不明時停止計算。');
+ const raw=o.dose*p.weight,amount=Math.min(Math.max(raw,mode.floor??0),cap),capped=amount!==raw,unit=mode.unit.split('/')[0];let volume=null,rate=null;
+ if(mode.kind==='infusion'){
+  if(!positive(o.concentration))throw Error('請輸入最終濃度（μg/mL），不得填原液mg/mL。');
+  if(mode.recipe&&Math.abs(o.concentration-mode.recipe.c*1000)>1e-8)throw Error('此模式最終濃度需與來源配方一致。');
+  if(mode.premix&&!mode.premix.some(c=>Math.abs(o.concentration-c*1000)<1e-8))throw Error('此模式僅支援所列藥局預混濃度。');
+  rate=amount*(mode.unit.endsWith('/min')?60:1)/o.concentration;
+ }else if(unit==='mL')volume=amount;
+ else{if(!positive(o.concentration))throw Error('請輸入實際給藥濃度（'+unit+'/mL）。');if(mode.concentration!==undefined&&Math.abs(o.concentration-mode.concentration)>1e-8)throw Error('此模式僅支援 '+mode.concentration+' '+unit+'/mL。');volume=amount/o.concentration;}
+ if(mode.minMinutes||mode.maxRateKgHour){if(!positive(o.minutes)||o.minutes<(mode.minMinutes||0))throw Error('輸注時間至少 '+mode.minMinutes+' 分鐘。');if(mode.maxRateKgHour&&amount/p.weight/(o.minutes/60)>mode.maxRateKgHour+1e-9)throw Error('超過本模式最大每公斤每小時給藥速率。');rate=volume*60/o.minutes;}
+ let mix=null;if(mode.recipe){mix=dilution(mode.recipe,o.stock);const expected=mode.kind==='infusion'?mode.recipe.c*1000:unit==='μg'?mode.recipe.c*1000:mode.recipe.c;if(Math.abs(o.concentration-expected)>1e-8)throw Error('給藥濃度與稀釋配方不一致。');}
+ if(mix&&volume!==null&&volume>mix.total+1e-8)throw Error('本次需要的給藥體積超過此配方總量；請由藥師核對較大批次，不直接照此配方給藥。');
+ return {raw,amount,unit,capped,cap,floor:mode.floor,volume,rate,mix};
 }
 function maintenance(p){checkPatient(p);if(!['infant','child'].includes(p.group)||p.ageMonths<1)throw Error('此維持輸液公式限滿1個月，早產／新生兒須依日齡、胎齡與電解質處方。');const w=p.weight;if(w<3)throw Error('小於3 kg需個別評估，本表不自動計算。');return {hour:w>60?100:w<=10?4*w:w<=20?40+2*(w-10):60+w-20,day:w>60?2400:w<=10?100*w:w<=20?1000+50*(w-10):1500+20*(w-20)};}
 function bolusFluid(p,mlkg){checkPatient(p);if(!['infant','child'].includes(p.group))throw Error('出生復甦／新生兒補液不套用此兒科模式。');if(mlkg!==10)throw Error('本模式固定10 mL/kg，再評估反應。');return p.weight*mlkg;}
