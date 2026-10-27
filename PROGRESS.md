@@ -3,7 +3,7 @@
 - Added always-visible IV fluid type references to maintenance, bolus and ongoing-loss cards, with expandable RCH sources and scope.
 - Neonatal references remain conditional on birth gestation >32 weeks, birthweight >1.5 kg and non-NICU setting. No automatic potassium addition or change to existing volume calculations.
 - Passed test-fluid-types, clinical, UI, recommendations, audit, equipment, remember and offline suites. DOM/simulation checks only; no phone/browser or clinical sign-off.
-- Private deployment pending for this revision.
+- Private deployment succeeded: appgdep_6ae01f7f39208191a01ae3283a789f40; commit e636c4597a1303f7a42043cc6a2baa475cc50ce2; owner-only access retained.
 
 # 兒科口袋助手進度
 
