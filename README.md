@@ -42,3 +42,7 @@ node --check dist/clinical-ui.js
 
 驗證：`node test-clinical.cjs`、`node test-ui.cjs`、`node test-recommendations.cjs`、`node test-offline.cjs`。DOM與快取測試不等於手機實機驗證。
 
+# v0.6.1 急救藥物核對
+
+頁尾「急救藥物線上核對紀錄」可查看14藥28模式的比對與原始來源，或篩選待人工檢視項目。主卡片同步標註；原劑量與公式保留，未自動選用其他來源替換。詳見 [核對報告](audit/RESUSCITATION-REVIEW-20261027.md)。其他分類尚未在本輪重新線上核對。備份位於同層Pediatric-assistant-backups/20261027-v06-before-online-audit，附驗證後還原至新資料夾的腳本。
+

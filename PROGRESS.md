@@ -1,5 +1,16 @@
 # 兒科口袋助手進度
 
+## 目前有效：v0.6.1 急救藥物線上比對（2026-10-27）
+- 使用者授權接續線上核對、先存檔、衝突標註人工檢視。沿用先前分批約定，本批完成急救14藥28模式（27 IV顯示、1 IM原資料排除）。其他分類尚未在本輪重新線上核對。
+- 原v0.6完整來源快照32檔、SHA-256及Git bundle：../Pediatric-assistant-backups/20261027-v06-before-online-audit/。bundle已驗證；restore-to-new-folder.ps1可驗證後還原至新資料夾，不覆蓋現行版。
+- 線上比對AHA/AAP 2025、ERC 2025、RCUK 2026-02 V6、CPS 2026及CHEO／LHSC原始院內來源。resuscitation-audit.js保存逐模式結果及來源；audit/RESUSCITATION-REVIEW-20261027.md保存完整對照。
+- 11模式待人工檢視、11模式具情境限制、5模式指定來源數值相符、1個非IV排除。這些分類不是臨床認證，沒有把院內來源當作全球唯一標準。
+- 優先項目：Amiodarone後續上限150 vs300 mg（RCUK文件內簡表與流程亦不一致）、Atropine上限方案、Dextrose與Magnesium方案、新生兒Dobutamine體重分流濃度、Milrinone青少年分層及腎／累積量。
+- 主畫面保留數字並增加人工檢視標記，完整說明及原始連結放展開區；頁尾連audit.html，含僅顯示待檢視的篩選。核對頁及資料納入離線快取。
+- clinical-data.js及clinical-core.js未修改，有衝突的劑量未自動更改。原References疑點保留，不重新匯入舊圖表。
+- test-audit.cjs、test-clinical.cjs、test-ui.cjs、test-recommendations.cjs、test-offline.cjs通過；核對頁斷網導航及資料可用，語法與diff檢查通過。32檔備份雜湊均相符，clinical-data.js／clinical-core.js與備份逐位元一致。尚未iPhone實機測試。
+- 發布結果待補記。下一批為麻醉藥物（本次未核對）；人工決定各衝突採用方案後再修改臨床值，不直接拼接不同指引。
+
 ## 目前有效：v0.6 IV建議數字直接顯示（2026-10-27）
 - 使用者再次明確要求：依年齡與體重建議劑量、關鍵數字立即顯示、方法置於展開區，給藥途徑皆IV。
 - recommendations.js沿用現有來源範圍及年齡條件，即時計算各適用IV情境總用量／持續給藥量；不是讓使用者先自行輸入每公斤劑量。保留多情境，不擅自選定單一劑量。
@@ -7,7 +18,10 @@
 - 套用既有單次上限；有來源濃度／配方者顯示對應mL或mL/hr並明示濃度假設。腎功能及需個別上限等條件仍有可見提示。
 - 卡片全部常駐；計算依據、來源、濃度及指定劑量換算收在details內。核心資料及公式未變動。
 - 備份：../Pediatric-assistant-backups/20261027-before-IV-summary/；service worker更新v0.6。
-- 急救藥物全面核對仍暫停；此版不代表新增臨床驗收。發布及測試結果待補。
+- 急救藥物全面核對仍暫停；此版不代表新增臨床驗收。
+- test-clinical.cjs、test-ui.cjs（104模式／族群）、test-recommendations.cjs、test-offline.cjs通過；未做實際iPhone排版驗證。
+- 已成功私人發布：commit 12359043d62f2b4f49a9aba0ab8137cee9c40fdd；deployment appgdep_6adff653498081918f4bd6c155f35388；version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_faacc2ee8e6081919543a62f437bc271。
+- 原私人網址不變；裝置可用「檢查版本更新」套用v0.6。
 
 ## 目前有效：還原建議劑量版（2026-10-27）
 - 使用者澄清需要依年齡及體重的藥物建議劑量，要求還原原版。此指示取代下方v0.4／v0.5「計算機模式」方向。

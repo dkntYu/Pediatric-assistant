@@ -18,6 +18,8 @@ function render(name,p){
   const adjust=v=>Math.max(m.floor??0,Math.min(v*p.weight,m.cap??Infinity));
   const low=adjust(m.min),high=adjust(m.max);
   row.append(make('p',range(low,high)+' '+unit+suffix,'dose-number'));
+  const audit=root.ResuscitationAudit?.modes[m.id];
+  if(audit){const labels={review:'待人工檢視 · 存在來源或適用條件衝突',context:'已比對來源 · 有情境限制',matched:'已比對指定來源劑量'};row.append(make('p',labels[audit.status],audit.status==='review'?'audit-flag':'audit-status'));if(m.id==='amio')row.append(make('p','後續劑量上限有150 mg依據；原300 mg值保留待檢視。','audit-flag'));}
   row.append(make('p',m.kind==='infusion'?'持續靜脈輸注':'靜脈給藥','dose-label'));
   if(m.concentration&&unit!=='mL')row.append(make('p',range(low/m.concentration,high/m.concentration)+' mL · '+m.concentration+' '+unit+'/mL','dose-volume'));
   else if(m.recipe&&unit!=='mL'){const conc=m.recipe.c*(unit==='μg'?1000:1),factor=m.kind==='infusion'&&m.unit.endsWith('/min')?60:1;row.append(make('p',range(low*factor/conc,high*factor/conc)+(m.kind==='infusion'?' mL/hr':' mL'),'dose-volume'));row.append(make('p','依來源配方 '+conc+' '+unit+'/mL；實際濃度不同須重新換算','dose-condition'))}
@@ -27,6 +29,7 @@ function render(name,p){
   if(m.centralAbove)row.append(make('p','周邊管路用量限制需另核對','dose-condition'));
   if(m.minMinutes&&!m.admin)row.append(make('p','輸注時間至少 '+m.minMinutes+' 分鐘','dose-admin'));
   const detail=make('details',undefined,'reference-details');detail.append(make('summary','計算依據與來源'));
+  if(audit){detail.append(make('p','線上比對 '+root.ResuscitationAudit.date+'：'+audit.note));for(const id of audit.refs){const [title,url]=root.ResuscitationAudit.sources[id],a=make('a',title);a.href=url;a.target='_blank';a.rel='noopener noreferrer';detail.append(a,make('br'));}}
   detail.append(make('p',m.min+(m.min===m.max?'':'–'+m.max)+' '+m.unit+' × '+p.weight.toFixed(1)+' kg'));
   if(m.cap)detail.append(make('p','來源單次上限：'+m.cap+' '+unit+'；顯示值已套用上限。'));
   if(m.floor)detail.append(make('p','本來源最低量：'+m.floor+' '+unit+'；顯示值已套用。'));

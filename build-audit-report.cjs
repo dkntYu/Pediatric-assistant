@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),D=require('./dist/clinical-data.js'),A=require('./dist/resuscitation-audit.js');
+const backup=path.resolve('../Pediatric-assistant-backups/20261027-v06-before-online-audit');
+const items=[];for(const [drug,d]of Object.entries(D.drugs))for(const m of d.modes)if(A.modes[m.id])items.push({drug,...m,audit:A.modes[m.id]});
+if(items.length!==28)throw Error('Expected exactly 28 reviewed source modes');
+fs.mkdirSync('audit',{recursive:true});
+const snapshot={date:A.date,baseline:A.baseline,clinicalDataSHA256:crypto.createHash('sha256').update(fs.readFileSync(path.join(backup,'source/dist/clinical-data.js'))).digest('hex'),modes:items.map(({audit,...m})=>m)};
+fs.writeFileSync('audit/resuscitation-baseline.json',JSON.stringify(snapshot,null,2)+'\n');
+const labels={review:'待人工檢視',context:'來源可追溯／情境限制',matched:'指定來源數值相符',excluded:'非IV，不顯示'};
+let out=`# 急救藥物線上核對報告\n\n比對日期：${A.date}（Asia/Taipei）。基準：v0.6，commit ${A.baseline}。\n\n範圍：${A.scope}。沿用先前分批約定，麻醉藥物、呼吸道、輸液與血品尚未在本輪重新線上核對。\n\n本版只新增人工檢視標記與來源，clinical-data.js及clinical-core.js保持原樣。比對方式是逐項閱讀原始指引／院內專業來源，再以程式檢查資料完整性與算術；不是自動取得臨床認證。\n\n## 備份與還原\n\n完整來源快照、逐檔SHA-256及Git歷史：\n\n- ${backup}\n- manifest.json：32個檔案雜湊，包含當時尚未提交的PROGRESS.md。\n- repository.bundle：完整Git歷史，已通過git bundle verify。\n- restore-to-new-folder.ps1：驗證雜湊後還原至新的資料夾，不覆蓋現行版本。執行後可開啟新資料夾dist/index.html。\n\n還原線上網站另須重新發布，不能以舊service worker識別直接宣稱所有手機已回復。\n\n## 優先人工決策\n\n1. Amiodarone：現模式合併首劑／後續劑量，但上限不同；RCUK同文件簡表與流程亦有差異。\n2. Atropine、Calcium gluconate、Adenosine、Dextrose、Magnesium：須決定院內採用哪一套來源方案，不混用。\n3. 新生兒Dobutamine：體重分流的濃度不應在速率換算中省略。\n4. Dopamine／Isoproterenol新生兒舊來源、Milrinone年齡分層與腎功能／每日累積量須人工補核。\n\n## 逐模式比對\n\n| 藥物／模式 | 原始範圍 | 結果 | 發現及來源 |\n|---|---|---|---|\n`;
+for(const m of items){const a=m.audit,links=a.refs.map(id=>{const [t,u]=A.sources[id];return `[${t}](${u})`}).join('、');out+=`| ${m.drug} / ${m.id} | ${m.min}${m.min===m.max?'':'–'+m.max} ${m.unit}${m.cap?'；上限 '+m.cap+' '+m.unit.split('/')[0]:''} | ${labels[a.status]} | ${a.note} ${links} |\n`;}
+out+='\n## 未宣稱完成的項目\n\n- 未將來源吻合等同全球唯一標準、臺灣核准適應症或院內製劑驗收。\n- 未完整稽核所有交互作用、安定性、容器、管路、配伍、肥胖用藥體重及肝腎調整。\n- 未加入給藥紀錄與重複／每日累積劑量追蹤。\n- 本輪未重新抄錄References中的舊圖表；既有CLINICAL-REVIEW.md的重大單位疑點繼續保留。\n- 藥物模式具有情境條件；新生兒日齡並不等同出生復甦情境，維持範圍不等同起始劑量。\n\n## 驗證\n\n執行node test-audit.cjs、node test-clinical.cjs、node test-ui.cjs、node test-recommendations.cjs及node test-offline.cjs。執行結果另見PROGRESS.md；DOM／快取測試不是iPhone實機或臨床驗收。\n';
+fs.writeFileSync('audit/RESUSCITATION-REVIEW-20261027.md',out);
+const counts={};for(const m of items)counts[m.audit.status]=(counts[m.audit.status]||0)+1;console.log(JSON.stringify({modes:items.length,counts,report:'audit/RESUSCITATION-REVIEW-20261027.md'}));

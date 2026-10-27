@@ -1,0 +1,554 @@
+{
+  "date": "2026-10-27",
+  "baseline": "12359043d62f2b4f49a9aba0ab8137cee9c40fdd",
+  "clinicalDataSHA256": "ddaacf52934cef998f6b9dd10d7b5cd77c3c72f367d4118a1455b71cb25e9bd8",
+  "modes": [
+    {
+      "drug": "Atropine",
+      "id": "atr",
+      "title": "兒科急救 IV",
+      "min": 0.02,
+      "max": 0.02,
+      "unit": "mg/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 0.6
+    },
+    {
+      "drug": "Atropine",
+      "id": "atrN",
+      "title": "新生兒插管前 IV",
+      "min": 0.01,
+      "max": 0.02,
+      "unit": "mg/kg",
+      "source": "cps",
+      "kind": "bolus",
+      "groups": [
+        "preterm",
+        "neonate"
+      ]
+    },
+    {
+      "drug": "Epinephrine (Bosmin)",
+      "id": "epiArrest",
+      "title": "兒科心跳停止 IV/IO",
+      "min": 0.01,
+      "max": 0.01,
+      "unit": "mg/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 1,
+      "concentration": 0.1,
+      "admin": "使用0.1 mg/mL（100 μg/mL）；每3–5分鐘依復甦流程，非持續輸注。",
+      "recipe": {
+        "stock": 1,
+        "c": 0.1,
+        "total": 10,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Epinephrine (Bosmin)",
+      "id": "epiN",
+      "title": "新生兒復甦 IV/UVC",
+      "min": 0.01,
+      "max": 0.03,
+      "unit": "mg/kg",
+      "source": "epiNeo",
+      "kind": "bolus",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "concentration": 0.1,
+      "admin": "來源起始0.02 mg/kg；每3–5分鐘視需要，不是IM過敏劑量。"
+    },
+    {
+      "drug": "Epinephrine (Bosmin)",
+      "id": "epiIM",
+      "title": "過敏性休克 IM（非新生兒）",
+      "min": 0.01,
+      "max": 0.01,
+      "unit": "mg/kg",
+      "source": "emerg",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 0.5,
+      "concentration": 1,
+      "admin": "使用1 mg/mL；只限IM。依過敏性休克流程評估重複。",
+      "floor": 0.1
+    },
+    {
+      "drug": "Epinephrine (Bosmin)",
+      "id": "epiI",
+      "title": "低血壓／休克 infusion",
+      "min": 0.05,
+      "max": 0.3,
+      "unit": "μg/kg/min",
+      "source": "epiNeo",
+      "kind": "infusion",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "recipe": {
+        "stock": 0.1,
+        "c": 0.006,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Epinephrine (Bosmin)",
+      "id": "epiPedI",
+      "title": "兒科循環支持 infusion（非新生兒）",
+      "min": 0.01,
+      "max": 1,
+      "unit": "μg/kg/min",
+      "source": "queen",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ]
+    },
+    {
+      "drug": "Dobutamine",
+      "id": "dob",
+      "title": "心肌收縮力支持 infusion",
+      "min": 2.5,
+      "max": 15,
+      "unit": "μg/kg/min",
+      "source": "dob",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "recipe": {
+        "stock": 12.5,
+        "c": 0.8,
+        "total": 50,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      },
+      "centralAbove": 5
+    },
+    {
+      "drug": "Dobutamine",
+      "id": "dobN",
+      "title": "NICU 心輸出量支持 infusion",
+      "min": 5,
+      "max": 20,
+      "unit": "μg/kg/min",
+      "source": "dobNeo",
+      "kind": "infusion",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "recipe": {
+        "stock": 12.5,
+        "c": 1,
+        "total": 50,
+        "diluent": "D5W",
+        "unit": "mg"
+      },
+      "admin": "中央管路優先；1 kg以上院內可能採不同濃度，需核對。"
+    },
+    {
+      "drug": "Dopamine",
+      "id": "dop",
+      "title": "兒科循環支持 infusion",
+      "min": 1,
+      "max": 20,
+      "unit": "μg/kg/min",
+      "source": "queen",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "premix": [
+        0.8,
+        1.6
+      ],
+      "admin": "使用經確認之藥局預混液；不從未知原液推算配方。"
+    },
+    {
+      "drug": "Dopamine",
+      "id": "dopN",
+      "title": "NICU 循環支持 infusion",
+      "min": 2.5,
+      "max": 10,
+      "unit": "μg/kg/min",
+      "source": "dopNeo",
+      "kind": "infusion",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "premix": [
+        0.8,
+        1.6
+      ],
+      "admin": "最大20 μg/kg/min未納入本版一般範圍；需專科評估。"
+    },
+    {
+      "drug": "Norepinephrine",
+      "id": "nor",
+      "title": "兒科急性低血壓 infusion",
+      "min": 0.01,
+      "max": 1,
+      "unit": "μg/kg/min",
+      "source": "nor",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "recipe": {
+        "stock": 1,
+        "c": 0.012,
+        "total": 50,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Norepinephrine",
+      "id": "norN",
+      "title": "NICU 休克 infusion",
+      "min": 0.01,
+      "max": 0.4,
+      "unit": "μg/kg/min",
+      "source": "norNeo",
+      "kind": "infusion",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "recipe": {
+        "stock": 1,
+        "c": 0.012,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Sodium bicarbonate",
+      "id": "bic",
+      "title": "代謝性酸中毒／高血鉀 IV",
+      "min": 1,
+      "max": 1,
+      "unit": "mmol/kg",
+      "source": "emerg",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "concentration": 0.5,
+      "admin": "4.2%（0.5 mmol/mL），至少2分鐘；需依血氣與病況評估，不自動重複。",
+      "recipe": {
+        "stock": 1,
+        "c": 0.5,
+        "total": 20,
+        "diluent": "注射用水",
+        "unit": "mmol"
+      }
+    },
+    {
+      "drug": "Sodium bicarbonate",
+      "id": "bicN",
+      "title": "NICU 代謝性酸中毒間歇輸注",
+      "min": 1,
+      "max": 2,
+      "unit": "mmol/kg",
+      "source": "bicarb",
+      "kind": "bolus",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "concentration": 0.5,
+      "admin": "1–4小時，且不得超過1 mmol/kg/hr；請填輸注分鐘數。",
+      "minMinutes": 60,
+      "maxRateKgHour": 1,
+      "recipe": {
+        "stock": 1,
+        "c": 0.5,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mmol"
+      }
+    },
+    {
+      "drug": "Calcium gluconate",
+      "id": "ca",
+      "title": "高血鉀導致不穩定心律 IV（10%）",
+      "min": 0.5,
+      "max": 0.5,
+      "unit": "mL/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 30,
+      "admin": "5–10分鐘，必要時依ECG於5–10分鐘後評估；本版不是低血鈣療程。"
+    },
+    {
+      "drug": "Amiodarone",
+      "id": "amio",
+      "title": "無脈VF/pVT：第3／5次電擊後 IV/IO",
+      "min": 5,
+      "max": 5,
+      "unit": "mg/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 300,
+      "admin": "心跳停止時bolus；依復甦流程給予，不自動安排重複。"
+    },
+    {
+      "drug": "Amiodarone",
+      "id": "amioPerf",
+      "title": "有灌流心律 IV",
+      "min": 5,
+      "max": 5,
+      "unit": "mg/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 300,
+      "admin": "60分鐘，需專科決策。",
+      "minMinutes": 60
+    },
+    {
+      "drug": "Adenosine",
+      "id": "ade1",
+      "title": "SVT 第1劑 IV",
+      "min": 0.1,
+      "max": 0.1,
+      "unit": "mg/kg",
+      "source": "queen",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 6,
+      "admin": "極快速推注後立即flush；flush量依管路與族群核對。"
+    },
+    {
+      "drug": "Adenosine",
+      "id": "ade2",
+      "title": "SVT 第2劑 IV",
+      "min": 0.2,
+      "max": 0.2,
+      "unit": "mg/kg",
+      "source": "queen",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 12,
+      "admin": "只有第1劑無效且臨床判斷適用時；快速推注後flush。"
+    },
+    {
+      "drug": "Dextrose",
+      "id": "glu",
+      "title": "低血糖 IV/IO：D10W",
+      "min": 2,
+      "max": 2,
+      "unit": "mL/kg",
+      "source": "rcuk",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 50,
+      "admin": "D10W 100 mg/mL；相當0.2 g/kg，5–10分鐘複測血糖。"
+    },
+    {
+      "drug": "Magnesium sulfate",
+      "id": "mag",
+      "title": "Torsades de pointes IV",
+      "min": 25,
+      "max": 25,
+      "unit": "mg/kg",
+      "source": "emerg",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "cap": 2000,
+      "renal": true,
+      "admin": "15–30分鐘；依病況與復甦流程評估。",
+      "minMinutes": 15,
+      "recipe": {
+        "stock": 500,
+        "c": 40,
+        "total": 25,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Naloxone",
+      "id": "nal",
+      "title": "opioid呼吸抑制：滴定 IV",
+      "min": 2,
+      "max": 2,
+      "unit": "μg/kg",
+      "source": "emerg",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "admin": "慢速IV，可依反應約每2分鐘評估；不是新生兒出生復甦的常規藥物。",
+      "recipe": {
+        "stock": 0.4,
+        "c": 0.04,
+        "total": 10,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Isoproterenol",
+      "id": "iso",
+      "title": "兒科 infusion",
+      "min": 0.05,
+      "max": 2,
+      "unit": "μg/kg/min",
+      "source": "iso",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "recipe": {
+        "stock": 0.2,
+        "c": 0.01,
+        "total": 50,
+        "diluent": "0.9% NaCl",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Isoproterenol",
+      "id": "isoN",
+      "title": "NICU infusion",
+      "min": 0.05,
+      "max": 2,
+      "unit": "μg/kg/min",
+      "source": "isoNeo",
+      "kind": "infusion",
+      "groups": [
+        "preterm",
+        "neonate"
+      ],
+      "recipe": {
+        "stock": 0.2,
+        "c": 0.02,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Milrinone",
+      "id": "mil",
+      "title": "兒科心衰竭 infusion",
+      "min": 0.25,
+      "max": 0.75,
+      "unit": "μg/kg/min",
+      "source": "mil",
+      "kind": "infusion",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "renal": true,
+      "recipe": {
+        "stock": 1,
+        "c": 0.1,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Milrinone",
+      "id": "milLoad",
+      "title": "兒科 loading IV（不是快速push）",
+      "min": 50,
+      "max": 50,
+      "unit": "μg/kg",
+      "source": "mil",
+      "kind": "bolus",
+      "groups": [
+        "infant",
+        "child"
+      ],
+      "renal": true,
+      "minMinutes": 15,
+      "admin": "15分鐘輸注；依血壓與病況評估是否使用。",
+      "recipe": {
+        "stock": 1,
+        "c": 0.1,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    },
+    {
+      "drug": "Milrinone",
+      "id": "milN",
+      "title": "足月新生兒 infusion；不loading",
+      "min": 0.25,
+      "max": 0.75,
+      "unit": "μg/kg/min",
+      "source": "milNeo",
+      "kind": "infusion",
+      "groups": [
+        "neonate"
+      ],
+      "renal": true,
+      "recipe": {
+        "stock": 1,
+        "c": 0.1,
+        "total": 20,
+        "diluent": "D5W",
+        "unit": "mg"
+      }
+    }
+  ]
+}
