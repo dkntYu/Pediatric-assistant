@@ -36,3 +36,9 @@ node --check dist/clinical-ui.js
 
 ## 原始資料
 `References/`是使用者提供的參考，保留在本地且排除Git，不自動發布。作者版及網頁可讀資料都需保留，避免只手改畫面而丟失依據。
+# v0.6 使用方式（優先於下方歷史版本說明）
+
+套用年齡與體重後，卡片直接顯示適用的IV建議用量範圍，無須先選劑量或按計算。單次與持續輸注分開顯示；有來源配方時列出對應體積／速率與濃度假設。公式、來源及個別濃度換算放在展開說明。PO與IM模式不列入本版介面，原始資料保留。來源不足仍明確標示。
+
+驗證：`node test-clinical.cjs`、`node test-ui.cjs`、`node test-recommendations.cjs`、`node test-offline.cjs`。DOM與快取測試不等於手機實機驗證。
+

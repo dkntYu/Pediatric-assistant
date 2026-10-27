@@ -6,7 +6,7 @@ for(const [,file]of html.matchAll(/<script src="([^"]+)"/g))w.eval(fs.readFileSy
 const change=n=>n.dispatchEvent(new w.Event('change',{bubbles:true}));
 const set=(id,val)=>{doc.getElementById(id).value=val};
 const submit=f=>f.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
-const expand=name=>{const b=[...doc.querySelectorAll('.expand')].find(n=>n.querySelector('strong').textContent===name);assert.ok(b,name);b.click();return doc.getElementById(b.getAttribute('aria-controls'))};
+const expand=name=>{const card=[...doc.querySelectorAll('.card')].find(n=>n.querySelector('.card-title').textContent===name);assert.ok(card,name);assert.equal(card.querySelector('.detail').hidden,false);return card.querySelector('.detail')};
 function fillLabel(box,prefix,value){const l=[...box.querySelectorAll('label')].find(l=>l.firstChild?.textContent.startsWith(prefix));assert.ok(l,prefix);const field=l.querySelector('input,select');assert.ok(field,prefix);field.value=value;return field}
 set('years','4');set('weight','10');submit(doc.getElementById('patient-form'));assert.match(doc.getElementById('summary').textContent,/10.0 kg/);
 doc.getElementById('tab-2').click();let detail=expand('Dobutamine'),choose=detail.querySelector('.mode-select');choose.value='dob';change(choose);
