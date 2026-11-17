@@ -1,10 +1,14 @@
-## v0.8.0 mobile UX (2026-10-27; local implementation complete, deployment pending)
+## Access update (2026-10-27)
+- User explicitly requested public access without login. Sites access changed to public; anyone with the URL may visit. Preserve public audience for future deployments.
+
+## v0.8.0 mobile UX (2026-10-27; private deployment succeeded)
 - Mobile/tablet (<850px): sticky category/favorites navigation, edit-patient anchor, safe-area spacing, 48px inputs/buttons, 16px field text, narrow-screen wrapping and single-column equipment tiles below 361px.
 - Applying valid patient data on mobile blurs the input and scrolls to lookup; category switches retain focus and return to lookup. Desktop apply retains its position. Roving keyboard tab focus and Chinese favorite labels added.
 - Clinical formulas and data unchanged. Service-worker cache bumped to v0.8.0.
 - PASS: test-mobile, UI (86 mode/cohort checks), remember, offline, clinical, equipment, recommendations, fluid-types, audit; JS syntax and git diff checks passed.
 - Validation limit: browser inventory is empty; no real browser, responsive layout rendering, iOS/Android keyboard or physical-device verification.
-- Next: finish private deployment and record deployment result; then verify 320/375/390/430px phone layouts and desktop on a browser/device.
+- Private deployment succeeded: appgdep_6ae0341e7ff0819198729191f317f396; source commit 96ac16583a4fee58b1669169dc280588e119d873; owner-only access retained.
+- Next: verify 320/375/390/430px phone layouts and desktop on a browser/device. Use the footer update check to activate v0.8.0 on installed devices.
 
 ## v0.7.5 (2026-10-27)
 - Removed search field and its event/filter dependencies; retained favorites.
@@ -203,3 +207,9 @@
 - node --check app.js/infusion.js 通過；test-infusion.cjs 的單位、稀釋、邊界、無效輸入、腎功能與早產限制通過。未新增實際瀏覽器／手機驗證；不宣稱臨床驗收完成。
 - 仍為本地檔案，既有 Sites 部署錯誤未解決；未啟用 PWA 快取。
 - 精確下一步：使用者試用急救區兩藥換算；下一批先報估量，再整理 References 的其他急救藥物及來源缺項。仍需完整適應症／禁忌核對、院內配方確認與實機驗證。
+
+## v0.8.1（2026-11-17）麻醉小助手主頁籤
+- 名稱與PWA名稱改為麻醉小助手；加入兒童／成人主頁籤及方向鍵導覽。兒童保留原功能，成人先顯示尚未建置，不混用兒科計算。
+- 更新離線快取版本及新增腳本。test-ui、test-offline、test-mobile、test-remember與主頁籤切換／鍵盤檢查通過。test-mobile改為檢查查詢分類tablist內唯一焦點，因目前有兩個tablist。
+- 瀏覽器存取主機不可用，未實測排版／手機。成人完整臨床功能尚未授權大量查證；下一步確認成人內容範圍，若需大量查證須另報用量取得同意。
+- 本次發布結果另記；保留原網站身份及既有公開權限。

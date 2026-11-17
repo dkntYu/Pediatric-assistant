@@ -43,3 +43,13 @@ input,select{font:inherit}
  #results:focus-visible{outline:3px solid #86b8a8;outline-offset:3px}
 }
 @media(max-width:360px){.patient{padding:12px}.detail{padding:12px}.equipment-grid{grid-template-columns:minmax(0,1fr)}}
+/* Primary population navigation, separate from the clinical category tabs. */
+.population-tabs{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#e5eee9;border:1px solid #cfdfd7;border-radius:16px;padding:6px;margin:0 0 24px}
+.population-tabs button{min-height:64px;border:0;border-radius:11px;background:transparent;color:#536f65;font-size:21px;font-weight:700;letter-spacing:.1em}
+.population-tabs button[aria-selected=true]{background:#176b63;color:white;box-shadow:0 3px 8px #176b6326}
+#population-child-panel,.adult-panel{grid-column:1/-1;min-width:0}
+.adult-panel{min-height:260px;padding:28px}
+.adult-panel h2{font-size:26px}.adult-panel>p{color:#58766d;line-height:1.8}
+.adult-topics{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}.adult-topics span{background:#f2f6f3;border:1px solid #dce6e1;border-radius:9px;padding:10px 14px;color:#6a7e78;font-size:14px}
+@media(min-width:850px){#population-child-panel{display:grid;grid-template-columns:360px minmax(0,1fr);gap:0 30px;align-items:start}}
+@media(max-width:480px){.population-tabs button{min-height:58px;font-size:20px}.adult-panel{padding:20px}}

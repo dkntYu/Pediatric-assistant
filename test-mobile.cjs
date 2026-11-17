@@ -12,7 +12,7 @@ for(const mobile of [true,false]){
  assert.match(d.querySelector('#summary').textContent,/10.0 kg/);
  assert.equal(scrolls,mobile?1:0);if(mobile)assert.notEqual(d.activeElement,weight);
  d.querySelector('#tab-2').click();assert.equal(scrolls,mobile?2:0);
- assert.equal(d.querySelectorAll('[role=tab][tabindex="0"]').length,1);
+ assert.equal(d.querySelectorAll('#tabs [role=tab][tabindex="0"]').length,1);
  assert.equal(d.activeElement.id,'tab-2');
  d.activeElement.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));
  assert.equal(d.activeElement.id,'tab-3');assert.equal(d.querySelector('#results').getAttribute('aria-labelledby'),'tab-3');
