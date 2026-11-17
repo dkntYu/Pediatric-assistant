@@ -13,7 +13,7 @@
     const doses=el('div',undefined,'adult-dose');d.dose.forEach(t=>doses.append(el('p',t)));card.append(doses);
     const recipeBox=el('div',undefined,'adult-recipe'),form=el('form',undefined,'adult-form');form.noValidate=true;
     const recipeSelect=select(form,card.id+'-recipe','泡法（最終總量）',d.recipes.map(r=>[r.id,`${r.amount} ${d.amountUnit}／${r.volume} mL`]));
-    const diluent=select(form,card.id+'-diluent','稀釋液',d.recipes[0].diluents.map(v=>[v,v]));
+    const diluent=select(form,card.id+'-diluent','稀釋液',d.recipes[0].diluents.map(v=>[v,v==='0.9% NaCl'?'NS（0.9% NaCl）':v]));
     const stock=input(form,card.id+'-stock',`實際原液濃度（${d.stockUnit}）`,`請填 ${d.stock}`,0,'');
     const dose=input(form,card.id+'-dose',`選用劑量（${d.unit}）`,`${d.min}–${d.max}`,d.min,d.max);
     let weight,renal;

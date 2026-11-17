@@ -223,3 +223,14 @@
 - test-adult.cjs、test-ui.cjs、test-offline.cjs、test-mobile.cjs、test-remember.cjs及新JS語法、git diff --check均通過。離線快取更新至v0.9.0並包含成人資產。
 - 瀏覽器存取主機仍不可用，未做真實瀏覽器／手機排版與iPhone飛航實測。來源為國外製劑及配方，臺灣現用製劑、院內配方與醫師／藥師驗收仍待完成；未宣稱可直接臨床使用。
 - 精確下一步：完成本版既有Sites發布並記錄結果；供使用者試用成人頁。其他成人藥物、腎調整換算或大量追加查證另需授權，不自動擴充。
+
+### v0.9.0 發布完成
+- Sites version 18 成功：https://pediatric-pocket-prototype.dkntstar.chatgpt.site
+- Source commit：85ef0c210f4b98b46933a9ba876a3e34815dc273。
+- Saved version：appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_19b9e5de93608191b1860a7640a4b10b。
+- Deployment：appgdep_6afc4dfd52388191940913bc00a4e24e（succeeded）。維持既有公開權限。
+- 下一步：使用者開成人頁試用；舊快取需按頁尾檢查版本更新並套用新版。後續依使用者回饋修訂；臨床／製劑／院內泡法驗收及手機實測仍未完成。
+
+## v0.9.1（2026-11-17）NS 預設
+- 使用者要求可用NS時預設NS。成人Milrinone及Pitressin的所有已核對配方改以0.9% NaCl為第一個／預設選項，D5W仍可選；Isoproterenol原有僅D5W配方不變。選單顯示NS（0.9% NaCl）。
+- 更新快取版本；不新增配方／相容性主張或改變計算。發布結果及驗證另記。
