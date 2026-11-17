@@ -213,3 +213,13 @@
 - 更新離線快取版本及新增腳本。test-ui、test-offline、test-mobile、test-remember與主頁籤切換／鍵盤檢查通過。test-mobile改為檢查查詢分類tablist內唯一焦點，因目前有兩個tablist。
 - 瀏覽器存取主機不可用，未實測排版／手機。成人完整臨床功能尚未授權大量查證；下一步確認成人內容範圍，若需大量查證須另報用量取得同意。
 - 本次發布結果另記；保留原網站身份及既有公開權限。
+- Published version 17 successfully: https://pediatric-pocket-prototype.dkntstar.chatgpt.site
+- Source commit: e4018972e60717f02af521a5ed4b4faecdbcf56b; saved version: appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_2cc947548554819185b1e454496a4bff; deployment: appgdep_6afc4b49f1b081918962e9769c0196f5 (succeeded).
+
+## v0.9.0（2026-11-17）成人急救藥物
+- 使用者批准約8,000–15,000 tokens批次：首批 Milrinone、Pitressin、Isoproterenol，僅劑量與≤50 mL泡法及速率換算，不列適用情境。未擴大到其他藥物。
+- 新增 adult-data.js／adult-core.js／adult-ui.js／adult.css。成人卡片獨立輸入，不承接兒童資料。Milrinone 10mg/50mL；Pitressin 20units/20mL或40units/40mL；Isoproterenol hydrochloride 2mg/50mL。資料來源與差異詳見ADULT-SOURCES.md。
+- 逐項線上核對成人官方SmPC、NSW CEC與醫院指引。劑量與配方來源分別註明，不把不同來源的範圍合併成通用劑量。中央管路、實際原液濃度、稀釋液及Milrinone腎功能限制已實作。
+- test-adult.cjs、test-ui.cjs、test-offline.cjs、test-mobile.cjs、test-remember.cjs及新JS語法、git diff --check均通過。離線快取更新至v0.9.0並包含成人資產。
+- 瀏覽器存取主機仍不可用，未做真實瀏覽器／手機排版與iPhone飛航實測。來源為國外製劑及配方，臺灣現用製劑、院內配方與醫師／藥師驗收仍待完成；未宣稱可直接臨床使用。
+- 精確下一步：完成本版既有Sites發布並記錄結果；供使用者試用成人頁。其他成人藥物、腎調整換算或大量追加查證另需授權，不自動擴充。

@@ -53,3 +53,8 @@ node --check dist/clinical-ui.js
 
 ## v0.8.1（2026-11-17）
 新增「兒童／成人」主頁籤；兒童保留既有功能，成人尚未建置臨床資料與計算。
+
+## v0.9.0（2026-11-17）成人急救藥物
+成人頁只提供 Milrinone、Pitressin（vasopressin／argipressin）、Isoproterenol（isoprenaline hydrochloride）的成人劑量、≤50 mL 泡法與輸注速率換算，不列適用情境介紹。劑量與泡法可直接查看，換算需自行輸入原液濃度及選用劑量；Milrinone 另輸入成人體重及腎功能。成人資料不與兒童共用、不儲存。
+
+本頁濃縮配方以中央靜脈輸注；原液濃度／稀釋液不符或 Milrinone 腎功能異常／不明時停止換算。請按實際製劑及院內配方核對。詳細來源與不同來源的範圍差異見 [ADULT-SOURCES.md](ADULT-SOURCES.md)。`node test-adult.cjs` 檢查成人計算及 DOM；未完成手機／臨床驗收。
