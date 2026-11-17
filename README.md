@@ -58,3 +58,8 @@ node --check dist/clinical-ui.js
 成人頁只提供 Milrinone、Pitressin（vasopressin／argipressin）、Isoproterenol（isoprenaline hydrochloride）的成人劑量、≤50 mL 泡法與輸注速率換算，不列適用情境介紹。劑量與泡法可直接查看，換算需自行輸入原液濃度及選用劑量；Milrinone 另輸入成人體重及腎功能。成人資料不與兒童共用、不儲存。
 
 本頁濃縮配方以中央靜脈輸注；原液濃度／稀釋液不符或 Milrinone 腎功能異常／不明時停止換算。請按實際製劑及院內配方核對。詳細來源與不同來源的範圍差異見 [ADULT-SOURCES.md](ADULT-SOURCES.md)。`node test-adult.cjs` 檢查成人計算及 DOM；未完成手機／臨床驗收。
+
+## v0.10.0（2026-11-17）Heparin／Protamine
+成人頁新增Heparin的ECMO／CPB起始劑量與體積換算，ECMO輸注泡法總量50mL並預設NS。Protamine提供CPB初始Heparin比值或經評估的殘餘UFH回補參考，另輸入本次處方量後換算≤50mL泡法。本版不自動拆次、判讀凝血檢查或估算Heparin代謝，迴路尚在運轉時停止Protamine換算。
+
+參考總量不是單次給藥量。ECMO起始數值有明確版本限制，詳細來源／限制見 [ANTICOAGULATION-SOURCES.md](ANTICOAGULATION-SOURCES.md)。驗證：`node test-anticoagulation.cjs`。未完成院內臨床驗收或手機實測。

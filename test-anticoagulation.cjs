@@ -1,0 +1,55 @@
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const A=require('./dist/anticoagulation.js'),near=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} != ${b}`);
+const hb={mode:'ecmo-bolus',weight:70,dose:50,stock:5000,diluent:'NS'};
+near(A.heparin(hb).units,3500);near(A.heparin(hb).stockVolume,0.7);
+near(A.heparin({...hb,mode:'cpb-bolus',dose:300}).units,21000);
+near(A.heparin({...hb,mode:'cpb-bolus',dose:400}).stockVolume,5.6);
+const hi=A.heparin({...hb,mode:'ecmo-infusion',dose:10});
+near(hi.unitsPerHour,700);near(hi.rate,1.4);near(hi.stockVolume,5);near(hi.diluentVolume,45);
+near(hi.stockVolume*5000,25000);near(hi.stockVolume+hi.diluentVolume,50);
+for(const [mode,m] of Object.entries(A.data.modes)){
+  for(const dose of [m.min,m.max])assert.ok(A.heparin({...hb,mode,dose}));
+  for(const dose of [NaN,Infinity,0,-1,m.min-0.001,m.max+0.001])assert.throws(()=>A.heparin({...hb,mode,dose}));
+}
+for(const weight of [NaN,Infinity,0,-1,301])assert.throws(()=>A.heparin({...hb,weight}));
+for(const stock of [0,500,1000,10000,NaN])assert.throws(()=>A.heparin({...hb,stock}));
+assert.throws(()=>A.heparin({...hb,mode:'unknown'}));
+assert.throws(()=>A.heparin({...hb,mode:'ecmo-infusion',dose:10,diluent:'water'}));
+near(A.heparin({...hb,mode:'ecmo-infusion',dose:10,diluent:'D5W'}).rate,1.4);
+const p={basis:'cpb-initial',circuit:'off',heparinUnits:21000,ratio:0.8,singleDose:null};
+near(A.protamine(p).referenceMg,168);assert.equal(A.protamine(p).preparation,undefined); // Not capped to 50.
+near(A.protamine({...p,basis:'residual',heparinUnits:3000}).referenceMg,30);
+const q=A.protamine({...p,singleDose:50,stock:10,finalVolume:20,diluent:'NS'}).preparation;
+near(q.stockVolume,5);near(q.diluentVolume,15);near(q.concentration,2.5);assert.equal(q.minMinutes,10);
+near(A.protamine({...p,singleDose:50,stock:10,finalVolume:50,diluent:'NS'}).preparation.diluentVolume,45);
+for(const circuit of ['',undefined,'running','unknown'])assert.throws(()=>A.protamine({...p,circuit}));
+for(const ratio of [0,-1,1,1.1,NaN,Infinity])assert.throws(()=>A.protamine({...p,ratio}));
+for(const heparinUnits of [NaN,Infinity,0,-1,1000001])assert.throws(()=>A.protamine({...p,heparinUnits}));
+for(const singleDose of [0,-1,50.01,NaN,Infinity])assert.throws(()=>A.protamine({...p,singleDose,stock:10,finalVolume:20,diluent:'NS'}));
+assert.throws(()=>A.protamine({...p,basis:'residual',heparinUnits:1000,singleDose:20,stock:10,finalVolume:20,diluent:'NS'}));
+assert.throws(()=>A.protamine({...p,singleDose:50,stock:1,finalVolume:20,diluent:'NS'}));
+assert.throws(()=>A.protamine({...p,singleDose:50,stock:10,finalVolume:51,diluent:'NS'}));
+
+const {JSDOM}=require('./.qa/node_modules/jsdom'),html=fs.readFileSync('dist/index.html','utf8');
+const dom=new JSDOM(html,{runScripts:'outside-only',url:'http://localhost/'}),w=dom.window,d=w.document;
+for(const [,file]of html.matchAll(/<script src="([^"]+)"/g))w.eval(fs.readFileSync('dist/'+file,'utf8'));
+const set=(id,value)=>{d.getElementById(id).value=value;};
+const change=id=>d.getElementById(id).dispatchEvent(new w.Event('change',{bubbles:true}));
+const form=id=>d.querySelector('#adult-'+id+' form');
+const result=id=>d.querySelector('#adult-'+id+' .adult-result');
+const submit=id=>form(id).dispatchEvent(new w.Event('submit',{cancelable:true}));
+assert.equal(d.getElementById('adult-heparin-diluent').value,'NS');assert.equal(d.getElementById('adult-protamine-diluent').value,'NS');
+set('weight','10');set('adult-heparin-stock','5000');set('adult-heparin-dose','50');submit('heparin');assert.match(result('heparin').textContent,/成人體重/);
+set('adult-heparin-weight','70');submit('heparin');assert.match(result('heparin').textContent,/3,500 units/);
+set('adult-heparin-mode','cpb-bolus');change('adult-heparin-mode');assert.equal(result('heparin').textContent,'');assert.equal(d.getElementById('adult-heparin-dose').value,'');
+set('adult-heparin-dose','300');submit('heparin');assert.match(result('heparin').textContent,/21,000 units/);
+set('adult-heparin-mode','ecmo-infusion');change('adult-heparin-mode');set('adult-heparin-dose','10');submit('heparin');assert.match(result('heparin').textContent,/1.4 mL\/hr/);
+set('adult-heparin-diluent','D5W');change('adult-heparin-diluent');assert.equal(result('heparin').textContent,'');assert.match(d.querySelector('#adult-heparin .adult-recipe').textContent,/D5W 45/);assert.equal(d.getElementById('adult-heparin-dose').value,'10');
+set('adult-protamine-circuit','off');set('adult-protamine-heparin','21000');set('adult-protamine-ratio','0.8');submit('protamine');assert.match(result('protamine').textContent,/168 mg/);assert.match(result('protamine').textContent,/尚未輸入本次處方量/);
+set('adult-protamine-single','50');set('adult-protamine-stock','10');submit('protamine');assert.match(result('protamine').textContent,/NS 15 mL/);assert.match(result('protamine').textContent,/至少10分鐘/);
+set('adult-protamine-single','51');submit('protamine');assert.match(result('protamine').textContent,/≤50 mg/);
+set('adult-protamine-basis','residual');change('adult-protamine-basis');assert.equal(result('protamine').textContent,'');assert.equal(d.getElementById('adult-protamine-heparin').value,'');assert.equal(d.getElementById('adult-protamine-single').value,'');assert.equal(d.getElementById('adult-protamine-ratio').disabled,true);
+set('adult-protamine-heparin','3000');submit('protamine');assert.match(result('protamine').textContent,/30 mg/);
+set('adult-protamine-circuit','running');change('adult-protamine-circuit');assert.equal(result('protamine').textContent,'');submit('protamine');assert.match(result('protamine').textContent,/不提供Protamine換算/);
+assert.equal(d.querySelectorAll('[id]').length,new Set([...d.querySelectorAll('[id]')].map(n=>n.id)).size);
+w.close();console.log('PASS: heparin ECMO/CPB separation, U/kg/hr without x60, 50 mL mass balance, protamine basis/ratio/uncapped total, single-dose limits, NS preparation, circuit blocks and edit invalidation. DOM only.');

@@ -234,3 +234,12 @@
 ## v0.9.1（2026-11-17）NS 預設
 - 使用者要求可用NS時預設NS。成人Milrinone及Pitressin的所有已核對配方改以0.9% NaCl為第一個／預設選項，D5W仍可選；Isoproterenol原有僅D5W配方不變。選單顯示NS（0.9% NaCl）。
 - 更新快取版本；不新增配方／相容性主張或改變計算。發布結果及驗證另記。
+- v0.9.1 validation: adult/default-selection/offline tests and JS syntax passed. Published successfully: https://pediatric-pocket-prototype.dkntstar.chatgpt.site ; commit c7b1a44811aa5c4a351e5d8f75d74b9b6c414096 ; version appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_bd68f49538ac8191bca6045dde578f03 ; deployment appgdep_6afc4f983f5881918b6243f80c152560. Browser/device visual validation remains unverified.
+
+## v0.10.0（2026-11-17）Heparin／Protamine
+- 使用者明確批准8,000–15,000 tokens查證與實作：成人Heparin分ECMO／CPB，Protamine劑量、泡法及換算。沿用可用NS者預設NS，不列適用情境介紹。
+- 新增anticoagulation.js、anticoagulation-ui.js、ANTICOAGULATION-SOURCES.md、test-anticoagulation.cjs。Heparin分ECMO起始bolus、起始infusion與CPB起始bolus；ECMO數值明示ELSO2014起始參考，已讀ELSO2021／2022個別化限制，不冒稱最新固定維持方案。
+- Heparin infusion為25,000units/50mL（5,000units/mL原液5mL＋NS45mL），bolus只換算原液。Protamine分CPB初始量比值及經評估的殘餘UFH依據，參考總量與本次≤50mg處方泡法分開；不自動截斷總量、拆次或依時間推估殘餘量。尚在ECMO／CPB或未確認時停算。
+- 新模組JS語法、test-anticoagulation、test-adult、test-ui、test-offline、test-mobile及git diff --check通過。成人卡片數測試由3改為5；其他既有藥物資料不變。
+- 快取更新v0.10.0並加入兩個新JS。瀏覽器存取主機不可用，未完成真實瀏覽器／手機／iPhone飛航驗證。臺灣製劑、院內ECMO與灌流抗凝流程、Protamine處方、醫師／藥師驗收尚待完成。
+- 精確下一步：完成既有Sites發布並記錄結果，供使用者試用；不自動擴充其他抗凝藥物或判讀凝血檢查。原成人/兒童資料與病人體重保持獨立。

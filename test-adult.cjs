@@ -33,7 +33,7 @@ const {JSDOM}=require('./.qa/node_modules/jsdom');
 const html=fs.readFileSync('dist/index.html','utf8');
 const dom=new JSDOM(html,{runScripts:'outside-only',url:'http://localhost/'}),w=dom.window,d=w.document;
 for(const [,file] of html.matchAll(/<script src="([^"]+)"/g))w.eval(fs.readFileSync('dist/'+file,'utf8'));
-assert.equal(d.querySelectorAll('.adult-drug').length,3);
+assert.equal(d.querySelectorAll('.adult-drug').length,5);
 d.getElementById('population-adult').click();assert.equal(d.getElementById('population-child-panel').hidden,true);
 assert.equal(d.getElementById('population-adult-panel').hidden,false);
 const set=(id,value)=>{d.getElementById(id).value=value;};
