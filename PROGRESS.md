@@ -243,3 +243,10 @@
 - 新模組JS語法、test-anticoagulation、test-adult、test-ui、test-offline、test-mobile及git diff --check通過。成人卡片數測試由3改為5；其他既有藥物資料不變。
 - 快取更新v0.10.0並加入兩個新JS。瀏覽器存取主機不可用，未完成真實瀏覽器／手機／iPhone飛航驗證。臺灣製劑、院內ECMO與灌流抗凝流程、Protamine處方、醫師／藥師驗收尚待完成。
 - 精確下一步：完成既有Sites發布並記錄結果，供使用者試用；不自動擴充其他抗凝藥物或判讀凝血檢查。原成人/兒童資料與病人體重保持獨立。
+
+### v0.10.0發布完成
+- Sites version 20成功：https://pediatric-pocket-prototype.dkntstar.chatgpt.site
+- Source commit：523f814ff2701fc063923383da9dc30212372a1c。
+- Saved version：appgprj_6adf79fe97c08191a7878e3d6f9e9b8b~appgver_890271c836588191bc02862509d4b8e3。
+- Deployment：appgdep_6afc5a11a080819191ce7f3b53a1b0d3（succeeded）。維持既有公開權限。
+- 下一步：使用者試用成人Heparin／Protamine；舊快取按檢查版本更新並套用。院內ECMO/CPB起始與維持流程、Protamine回補與製劑、臨床及手機驗收仍待完成。
